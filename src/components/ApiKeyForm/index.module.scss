@@ -1,0 +1,75 @@
+@use "../../styles/abstracts" as *;
+
+.api-key-form {
+  @include flex-column($spacing-lg);
+
+  .form-group {
+    @include flex-column($spacing-sm);
+
+    label {
+      @include text-body;
+      font-weight: $font-weight-medium;
+      color: $color-text-primary;
+    }
+
+    input,
+    select {
+      padding: $spacing-md;
+      background: $color-background-secondary;
+      border: $border-width-thin solid $color-border-primary;
+      border-radius: $border-radius-md;
+      color: $color-text-primary;
+      @include text-body;
+      transition: all 0.2s ease;
+
+      &:focus {
+        outline: none;
+        border-color: $color-accent;
+        box-shadow: 0 0 0 2px alpha($color-accent, 0.2);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      &::placeholder {
+        color: $color-text-secondary;
+      }
+    }
+
+    select {
+      cursor: pointer;
+    }
+
+    .error {
+      @include text-small;
+      color: $color-status-error;
+    }
+
+    .helper-text {
+      @include text-small;
+      color: $color-text-secondary;
+      margin: 0;
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    gap: $spacing-md;
+    justify-content: flex-end;
+    padding-top: $spacing-md;
+
+    .btn {
+      min-width: 120px;
+    }
+
+    .btn-outline {
+      @include button-outline;
+    }
+
+    .btn-primary {
+      @include button-primary;
+    }
+  }
+}

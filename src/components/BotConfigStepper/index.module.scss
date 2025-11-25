@@ -1,0 +1,343 @@
+@use "../../styles/abstracts" as *;
+
+.bot-config-stepper {
+  background: $color-background-primary;
+  border-radius: $border-radius-lg;
+  border: $border-width-thin solid $color-border-primary;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  @include custom-scrollbar;
+
+  .stepper-header {
+    @include flex-between;
+    padding: $spacing-lg;
+    border-bottom: $border-width-thin solid $color-border-primary;
+    position: sticky;
+    top: 0;
+    background: $color-background-primary;
+    z-index: 10;
+
+    h2 {
+      @include heading-2;
+      margin: 0;
+      color: $color-accent;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: $font-size-xl;
+      color: $color-text-secondary;
+      cursor: pointer;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      @include flex-center;
+      border-radius: $border-radius-sm;
+      transition: all 0.2s ease;
+
+      &:hover:not(:disabled) {
+        background: alpha($color-status-error, 0.2);
+        color: $color-status-error;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .stepper-progress {
+    display: flex;
+    justify-content: space-between;
+    padding: $spacing-xl $spacing-lg;
+    background: alpha($color-primary, 0.3);
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: $color-border-primary;
+      z-index: 0;
+    }
+
+    .step {
+      @include flex-column($spacing-xs);
+      align-items: center;
+      position: relative;
+      z-index: 1;
+      flex: 1;
+
+      .step-number {
+        @include flex-center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: $color-background-secondary;
+        border: 2px solid $color-border-primary;
+        color: $color-text-secondary;
+        font-weight: $font-weight-bold;
+        font-size: $font-size-lg;
+        transition: all 0.3s ease;
+      }
+
+      .step-label {
+        @include text-small;
+        color: $color-text-secondary;
+        font-weight: $font-weight-medium;
+      }
+
+      &.active .step-number {
+        background: $color-accent;
+        border-color: $color-accent;
+        color: $color-primary;
+        box-shadow: 0 0 0 4px alpha($color-accent, 0.2);
+      }
+
+      &.completed .step-number {
+        background: $color-status-success;
+        border-color: $color-status-success;
+        color: white;
+
+        &::after {
+          content: "✓";
+        }
+      }
+
+      &.active .step-label,
+      &.completed .step-label {
+        color: $color-text-primary;
+      }
+    }
+  }
+
+  .stepper-content {
+    padding: $spacing-xl $spacing-lg;
+  }
+
+  .alert {
+    padding: $spacing-md $spacing-lg;
+    border-radius: $border-radius-md;
+    @include text-body;
+    margin-bottom: $spacing-lg;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &.alert-error {
+      background: alpha($color-status-error, 0.1);
+      color: $color-status-error;
+      border: $border-width-thin solid alpha($color-status-error, 0.3);
+    }
+
+    button {
+      background: none;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+      font-size: $font-size-lg;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .step-form {
+    @include flex-column($spacing-xl);
+
+    h3 {
+      @include heading-3;
+      margin: 0;
+      color: $color-accent;
+      padding-bottom: $spacing-md;
+      border-bottom: $border-width-thin solid $color-border-primary;
+    }
+  }
+
+  .form-group {
+    @include flex-column($spacing-sm);
+
+    label {
+      @include text-body;
+      font-weight: $font-weight-medium;
+      color: $color-text-primary;
+    }
+
+    input,
+    select {
+      padding: $spacing-md;
+      background: $color-background-secondary;
+      border: $border-width-thin solid $color-border-primary;
+      border-radius: $border-radius-md;
+      color: $color-text-primary;
+      @include text-body;
+      transition: all 0.2s ease;
+
+      &:focus {
+        outline: none;
+        border-color: $color-accent;
+        box-shadow: 0 0 0 2px alpha($color-accent, 0.2);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      &::placeholder {
+        color: $color-text-secondary;
+      }
+    }
+
+    &.checkbox-group {
+      label {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        cursor: pointer;
+
+        input[type="checkbox"] {
+          width: auto;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: $spacing-lg;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-md;
+  }
+
+  .intervals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: $spacing-sm;
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: $spacing-xs;
+      padding: $spacing-sm;
+      background: $color-background-secondary;
+      border: $border-width-thin solid $color-border-primary;
+      border-radius: $border-radius-sm;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: alpha($color-primary, 0.3);
+      }
+
+      input[type="checkbox"] {
+        margin: 0;
+        cursor: pointer;
+      }
+
+      span {
+        @include text-small;
+        color: $color-text-primary;
+      }
+    }
+  }
+
+  .instance-form {
+    @include flex-column($spacing-md);
+    padding: $spacing-lg;
+    background: alpha($color-primary, 0.2);
+    border-radius: $border-radius-md;
+    border: $border-width-thin solid $color-border-primary;
+  }
+
+  .instances-list {
+    @include flex-column($spacing-md);
+
+    h4 {
+      @include heading-4;
+      margin: 0;
+      color: $color-text-primary;
+    }
+
+    .instance-item {
+      @include flex-between;
+      padding: $spacing-md;
+      background: $color-background-secondary;
+      border: $border-width-thin solid $color-border-primary;
+      border-radius: $border-radius-md;
+      gap: $spacing-md;
+
+      .instance-info {
+        @include flex-column($spacing-xs);
+        flex: 1;
+
+        strong {
+          @include text-body;
+          color: $color-accent;
+        }
+
+        .intervals {
+          @include text-small;
+          color: $color-text-secondary;
+        }
+      }
+
+      .btn-sm {
+        padding: $spacing-xs $spacing-sm;
+        font-size: $font-size-sm;
+      }
+
+      .btn-danger {
+        background: alpha($color-status-error, 0.1);
+        color: $color-status-error;
+        border: $border-width-thin solid alpha($color-status-error, 0.3);
+        padding: $spacing-sm $spacing-md;
+        border-radius: $border-radius-md;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: alpha($color-status-error, 0.2);
+        }
+      }
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    gap: $spacing-md;
+    justify-content: flex-end;
+    padding-top: $spacing-lg;
+    border-top: $border-width-thin solid $color-border-primary;
+
+    .btn {
+      min-width: 120px;
+    }
+
+    .btn-outline {
+      @include button-outline;
+    }
+
+    .btn-primary {
+      @include button-primary;
+    }
+
+    .btn-secondary {
+      @include button-secondary;
+    }
+  }
+}

@@ -1,0 +1,292 @@
+@use "../../../styles/abstracts" as *;
+
+.performance-page {
+  @include container(1400px);
+  @include flex-column($spacing-xl);
+  padding: $spacing-xl 0;
+
+  .page-header {
+    @include flex-between;
+    align-items: flex-start;
+
+    h1 {
+      @include heading-1;
+      margin: 0;
+      color: $color-accent;
+    }
+
+    .subtitle {
+      @include text-body;
+      color: $color-text-secondary;
+      margin: $spacing-xs 0 0 0;
+    }
+  }
+
+  .selectors {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: $spacing-lg;
+    padding: $spacing-lg;
+    background: alpha($color-primary, 0.2);
+    border-radius: $border-radius-lg;
+    border: $border-width-thin solid $color-border-primary;
+
+    .selector-group {
+      @include flex-column($spacing-sm);
+
+      label {
+        @include text-body;
+        font-weight: $font-weight-medium;
+        color: $color-text-primary;
+      }
+
+      select {
+        padding: $spacing-md;
+        background: $color-background-secondary;
+        border: $border-width-thin solid $color-border-primary;
+        border-radius: $border-radius-md;
+        color: $color-text-primary;
+        @include text-body;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:focus {
+          outline: none;
+          border-color: $color-accent;
+          box-shadow: 0 0 0 2px alpha($color-accent, 0.2);
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: $spacing-lg;
+  }
+
+  .metric-card {
+    @include card-base;
+    display: flex;
+    align-items: center;
+    gap: $spacing-lg;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+
+    &.highlight {
+      border: $border-width-thin solid $color-accent;
+      background: linear-gradient(135deg, alpha($color-primary, 0.4) 0%, alpha($color-secondary, 0.4) 100%);
+    }
+
+    .metric-icon {
+      font-size: 48px;
+      line-height: 1;
+    }
+
+    .metric-content {
+      @include flex-column($spacing-xs);
+      flex: 1;
+
+      .metric-label {
+        @include text-small;
+        color: $color-text-secondary;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .metric-value {
+        @include heading-2;
+        margin: 0;
+        color: $color-text-primary;
+
+        &.positive {
+          color: $color-status-success;
+        }
+
+        &.negative {
+          color: $color-status-error;
+        }
+      }
+    }
+  }
+
+  .alert {
+    padding: $spacing-md $spacing-lg;
+    border-radius: $border-radius-md;
+    @include text-body;
+
+    &.alert-error {
+      background: alpha($color-status-error, 0.1);
+      color: $color-status-error;
+      border: $border-width-thin solid alpha($color-status-error, 0.3);
+    }
+  }
+
+  .loading-state {
+    @include flex-center;
+    @include flex-column($spacing-md);
+    padding: $spacing-xxxl 0;
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid $color-border-primary;
+      border-top-color: $color-accent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    p {
+      @include text-body;
+      color: $color-text-secondary;
+      margin: 0;
+    }
+  }
+
+  .empty-state {
+    @include flex-center;
+    @include flex-column($spacing-md);
+    padding: $spacing-xxxl 0;
+    text-align: center;
+
+    .empty-icon {
+      font-size: 64px;
+      opacity: 0.5;
+    }
+
+    h3 {
+      @include heading-3;
+      margin: 0;
+      color: $color-text-primary;
+    }
+
+    p {
+      @include text-body;
+      color: $color-text-secondary;
+      margin: 0;
+    }
+  }
+
+  .operations-section {
+    @include flex-column($spacing-lg);
+
+    h3 {
+      @include heading-3;
+      margin: 0;
+      color: $color-accent;
+    }
+  }
+
+  .table-container {
+    overflow-x: auto;
+    border-radius: $border-radius-lg;
+    border: $border-width-thin solid $color-border-primary;
+    background: $color-background-secondary;
+
+    @include custom-scrollbar;
+  }
+
+  .operations-table {
+    width: 100%;
+    border-collapse: collapse;
+    @include text-body;
+
+    thead {
+      background: alpha($color-primary, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 1;
+
+      tr {
+        th {
+          padding: $spacing-md $spacing-lg;
+          text-align: left;
+          font-weight: $font-weight-bold;
+          color: $color-text-primary;
+          border-bottom: $border-width-thin solid $color-border-primary;
+          white-space: nowrap;
+          @include text-small;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        transition: background 0.2s ease;
+
+        &:hover {
+          background: alpha($color-primary, 0.2);
+        }
+
+        &.status-open {
+          background: alpha($color-status-info, 0.05);
+        }
+
+        td {
+          padding: $spacing-md $spacing-lg;
+          border-bottom: $border-width-thin solid $color-border-primary;
+          color: $color-text-primary;
+
+          &.symbol {
+            font-weight: $font-weight-bold;
+            color: $color-accent;
+          }
+
+          &.date {
+            color: $color-text-secondary;
+            font-size: $font-size-sm;
+          }
+
+          &.positive {
+            color: $color-status-success;
+            font-weight: $font-weight-bold;
+          }
+
+          &.negative {
+            color: $color-status-error;
+            font-weight: $font-weight-bold;
+          }
+
+          .status-badge {
+            padding: $spacing-xs $spacing-sm;
+            border-radius: $border-radius-sm;
+            font-size: $font-size-sm;
+            font-weight: $font-weight-medium;
+
+            &.open {
+              background: alpha($color-status-info, 0.2);
+              color: $color-status-info;
+              border: $border-width-thin solid alpha($color-status-info, 0.3);
+            }
+
+            &.close {
+              background: alpha($color-text-secondary, 0.2);
+              color: $color-text-secondary;
+              border: $border-width-thin solid alpha($color-text-secondary, 0.3);
+            }
+          }
+        }
+
+        &:last-child td {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

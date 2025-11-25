@@ -1,0 +1,287 @@
+@use "../../../styles/abstracts" as *;
+
+.my-bots-page {
+  @include container(1200px);
+  @include flex-column($spacing-xl);
+  padding: $spacing-xl 0;
+
+  .page-header {
+    @include flex-between;
+    align-items: flex-start;
+    gap: $spacing-lg;
+
+    h1 {
+      @include heading-1;
+      margin: 0;
+      color: $color-accent;
+    }
+
+    .subtitle {
+      @include text-body;
+      color: $color-text-secondary;
+      margin: $spacing-xs 0 0 0;
+    }
+  }
+
+  .alert {
+    padding: $spacing-md $spacing-lg;
+    border-radius: $border-radius-md;
+    @include text-body;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &.alert-success {
+      background: alpha($color-status-success, 0.1);
+      color: $color-status-success;
+      border: $border-width-thin solid alpha($color-status-success, 0.3);
+    }
+
+    &.alert-error {
+      background: alpha($color-status-error, 0.1);
+      color: $color-status-error;
+      border: $border-width-thin solid alpha($color-status-error, 0.3);
+    }
+
+    .retry-btn {
+      background: none;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+      padding: $spacing-xs $spacing-sm;
+      font-weight: $font-weight-medium;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .loading-state {
+    @include flex-center;
+    @include flex-column($spacing-md);
+    padding: $spacing-xxxl 0;
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid $color-border-primary;
+      border-top-color: $color-accent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    p {
+      @include text-body;
+      color: $color-text-secondary;
+      margin: 0;
+    }
+  }
+
+  .empty-state {
+    @include flex-center;
+    @include flex-column($spacing-md);
+    padding: $spacing-xxxl 0;
+    text-align: center;
+
+    .empty-icon {
+      font-size: 64px;
+      opacity: 0.5;
+    }
+
+    h3 {
+      @include heading-3;
+      margin: 0;
+      color: $color-text-primary;
+    }
+
+    p {
+      @include text-body;
+      color: $color-text-secondary;
+      margin: 0;
+    }
+  }
+
+  .bots-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: $spacing-lg;
+  }
+
+  .bot-card {
+    @include card-base;
+    @include flex-column($spacing-md);
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+
+    .bot-header {
+      padding-bottom: $spacing-md;
+      border-bottom: $border-width-thin solid $color-border-primary;
+
+      .bot-title {
+        @include flex-column($spacing-sm);
+
+        h3 {
+          @include heading-3;
+          margin: 0;
+          color: $color-accent;
+        }
+
+        .badges {
+          display: flex;
+          gap: $spacing-sm;
+          flex-wrap: wrap;
+
+          .status-badge {
+            padding: $spacing-xs $spacing-sm;
+            border-radius: $border-radius-sm;
+            @include text-small;
+            font-weight: $font-weight-bold;
+
+            &.active {
+              background: alpha($color-status-success, 0.2);
+              color: $color-status-success;
+              border: $border-width-thin solid alpha($color-status-success, 0.3);
+            }
+
+            &.inactive {
+              background: alpha($color-text-secondary, 0.2);
+              color: $color-text-secondary;
+              border: $border-width-thin solid alpha($color-text-secondary, 0.3);
+            }
+          }
+
+          .badge {
+            padding: $spacing-xs $spacing-sm;
+            border-radius: $border-radius-sm;
+            @include text-small;
+            font-weight: $font-weight-medium;
+            background: alpha($color-status-info, 0.2);
+            color: $color-status-info;
+            border: $border-width-thin solid alpha($color-status-info, 0.3);
+
+            &.position-long {
+              background: alpha($color-status-success, 0.2);
+              color: $color-status-success;
+              border-color: alpha($color-status-success, 0.3);
+            }
+
+            &.position-short {
+              background: alpha($color-status-error, 0.2);
+              color: $color-status-error;
+              border-color: alpha($color-status-error, 0.3);
+            }
+          }
+        }
+      }
+    }
+
+    .bot-info {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: $spacing-md;
+
+      .info-item {
+        @include flex-column($spacing-xs);
+
+        .label {
+          @include text-small;
+          color: $color-text-secondary;
+        }
+
+        .value {
+          @include text-body;
+          font-weight: $font-weight-medium;
+          color: $color-text-primary;
+        }
+      }
+    }
+
+    .bot-actions {
+      display: flex;
+      gap: $spacing-sm;
+      padding-top: $spacing-md;
+      border-top: $border-width-thin solid $color-border-primary;
+
+      .btn {
+        flex: 1;
+        padding: $spacing-sm $spacing-md;
+        font-size: $font-size-sm;
+      }
+
+      .btn-primary {
+        @include button-primary;
+      }
+
+      .btn-success {
+        background: alpha($color-status-success, 0.1);
+        color: $color-status-success;
+        border: $border-width-thin solid alpha($color-status-success, 0.3);
+        border-radius: $border-radius-md;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover:not(:disabled) {
+          background: alpha($color-status-success, 0.2);
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+
+      .btn-warning {
+        background: alpha($color-status-warning, 0.1);
+        color: $color-status-warning;
+        border: $border-width-thin solid alpha($color-status-warning, 0.3);
+        border-radius: $border-radius-md;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover:not(:disabled) {
+          background: alpha($color-status-warning, 0.2);
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+
+      .btn-danger {
+        background: alpha($color-status-error, 0.1);
+        color: $color-status-error;
+        border: $border-width-thin solid alpha($color-status-error, 0.3);
+        border-radius: $border-radius-md;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: alpha($color-status-error, 0.2);
+        }
+      }
+    }
+  }
+
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    @include flex-center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

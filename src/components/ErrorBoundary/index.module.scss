@@ -1,0 +1,63 @@
+@use "../../styles/abstracts" as *;
+
+.error-boundary {
+  @include flex-center;
+  min-height: 100vh;
+  padding: $spacing-xl;
+  background: $color-background-primary;
+
+  .error-content {
+    @include card-base;
+    @include flex-column($spacing-lg);
+    max-width: 600px;
+    text-align: center;
+
+    .error-icon {
+      font-size: 64px;
+    }
+
+    h2 {
+      @include heading-2;
+      margin: 0;
+      color: $color-status-error;
+    }
+
+    p {
+      @include text-body;
+      color: $color-text-secondary;
+      margin: 0;
+    }
+
+    .error-details {
+      width: 100%;
+      text-align: left;
+      background: $color-background-secondary;
+      border: $border-width-thin solid $color-border-primary;
+      border-radius: $border-radius-md;
+      padding: $spacing-md;
+
+      summary {
+        cursor: pointer;
+        font-weight: $font-weight-medium;
+        color: $color-text-primary;
+        margin-bottom: $spacing-sm;
+
+        &:hover {
+          color: $color-accent;
+        }
+      }
+
+      pre {
+        @include text-small;
+        color: $color-status-error;
+        margin: $spacing-sm 0 0 0;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+    }
+
+    .btn-primary {
+      @include button-primary;
+    }
+  }
+}

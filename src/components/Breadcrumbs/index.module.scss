@@ -1,0 +1,30 @@
+@use "../../styles/abstracts" as *;
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-md 0;
+  @include text-small;
+  color: $color-text-secondary;
+
+  .breadcrumb-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+
+    .separator {
+      color: $color-text-secondary;
+      opacity: 0.5;
+    }
+
+    span {
+      color: $color-text-secondary;
+
+      &.active {
+        color: $color-accent;
+        font-weight: $font-weight-medium;
+      }
+    }
+  }
+}

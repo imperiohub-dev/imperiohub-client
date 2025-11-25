@@ -1,0 +1,96 @@
+@use "../../styles/abstracts" as *;
+
+.toast {
+  position: fixed;
+  bottom: $spacing-xl;
+  right: $spacing-xl;
+  min-width: 300px;
+  max-width: 500px;
+  padding: $spacing-md $spacing-lg;
+  border-radius: $border-radius-md;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  z-index: 9999;
+  animation: slideIn 0.3s ease-out;
+
+  @keyframes slideIn {
+    from {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  .toast-icon {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    flex-shrink: 0;
+  }
+
+  .toast-message {
+    flex: 1;
+    @include text-body;
+    color: $color-text-primary;
+  }
+
+  .toast-close {
+    background: none;
+    border: none;
+    color: $color-text-secondary;
+    cursor: pointer;
+    font-size: $font-size-lg;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    @include flex-center;
+    border-radius: $border-radius-sm;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+
+    &:hover {
+      background: alpha($color-text-secondary, 0.2);
+      color: $color-text-primary;
+    }
+  }
+
+  &.toast-success {
+    background: alpha($color-status-success, 0.15);
+    border: $border-width-thin solid alpha($color-status-success, 0.4);
+
+    .toast-icon {
+      color: $color-status-success;
+    }
+  }
+
+  &.toast-error {
+    background: alpha($color-status-error, 0.15);
+    border: $border-width-thin solid alpha($color-status-error, 0.4);
+
+    .toast-icon {
+      color: $color-status-error;
+    }
+  }
+
+  &.toast-info {
+    background: alpha($color-status-info, 0.15);
+    border: $border-width-thin solid alpha($color-status-info, 0.4);
+
+    .toast-icon {
+      color: $color-status-info;
+    }
+  }
+
+  &.toast-warning {
+    background: alpha($color-status-warning, 0.15);
+    border: $border-width-thin solid alpha($color-status-warning, 0.4);
+
+    .toast-icon {
+      color: $color-status-warning;
+    }
+  }
+}

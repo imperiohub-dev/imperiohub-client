@@ -1,0 +1,98 @@
+// ============================================
+// Design Tokens - Variables
+// ============================================
+
+// Color tokens
+$color-primary: #000814;
+$color-secondary: #1d212c;
+$color-accent: #ffd700;
+
+$color-background-primary: #1b1b1b;
+$color-background-secondary: #1d212c;
+$color-background-contrast: #1e1e2f;
+$color-background-card: #130d00;
+
+$color-text-primary: #ffffff;
+$color-text-secondary: #979797;
+$color-text-accent: #ffd700;
+$color-text-inverse: #000000;
+
+$color-status-success: #00ff9d;
+$color-status-error: #ff4d4f;
+$color-status-warning: #ff9100;
+$color-status-info: #5865f2;
+
+$color-border-primary: rgba(255, 255, 255, 0.1);
+$color-border-secondary: rgba(255, 255, 255, 0.05);
+$color-border-accent: #ffd700;
+
+// Spacing tokens (base unit: 0.8rem = 8px)
+$spacing-xs: 0.4rem;
+$spacing-sm: 0.8rem;
+$spacing-md: 1.6rem;
+$spacing-lg: 2.4rem;
+$spacing-xl: 3.2rem;
+$spacing-xxl: 4.8rem;
+$spacing-xxxl: 6.4rem;
+
+// Typography tokens
+$font-family-primary: "Montserrat", "Inter", "Segoe UI", sans-serif;
+$font-family-secondary: "Inter", "Segoe UI", sans-serif;
+
+$font-size-xs: 1.2rem;
+$font-size-sm: 1.4rem;
+$font-size-md: 1.6rem;
+$font-size-lg: 2.0rem;
+$font-size-xl: 2.8rem;
+$font-size-xxl: 3.2rem;
+$font-size-xxxl: 4.0rem;
+
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+$line-height-tight: 1.2;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.6;
+$line-height-loose: 1.8;
+
+// Border tokens
+$border-radius-xs: 2px;
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+$border-radius-xl: 16px;
+$border-radius-xxl: 24px;
+
+$border-width-thin: 1px;
+$border-width-medium: 2px;
+$border-width-thick: 3px;
+
+// Shadow tokens (elevation)
+$shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+$shadow-md: 0 3px 6px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.12);
+$shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.10);
+$shadow-xl: 0 15px 25px rgba(0, 0, 0, 0.15), 0 5px 10px rgba(0, 0, 0, 0.05);
+
+// Transitions
+$transition-fast: 150ms ease-in-out;
+$transition-normal: 250ms ease-in-out;
+$transition-slow: 350ms ease-in-out;
+
+// Z-index scale
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-fixed: 1030;
+$z-index-modal-backdrop: 1040;
+$z-index-modal: 1050;
+$z-index-popover: 1060;
+$z-index-tooltip: 1070;
+
+// Breakpoints
+$breakpoint-xs: 480px;
+$breakpoint-sm: 768px;
+$breakpoint-md: 1024px;
+$breakpoint-lg: 1280px;
+$breakpoint-xl: 1536px;

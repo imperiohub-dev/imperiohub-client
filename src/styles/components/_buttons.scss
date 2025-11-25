@@ -1,0 +1,54 @@
+// ============================================
+// Button Components
+// ============================================
+
+@use '../abstracts' as *;
+
+// Button base classes
+.btn {
+  @include button-base;
+}
+
+.btn-primary {
+  @include button-primary;
+}
+
+.btn-secondary {
+  @include button-secondary;
+}
+
+.btn-outline {
+  @include button-outline;
+}
+
+.btn-ghost {
+  @include button-ghost;
+}
+
+// Button sizes
+.btn-sm {
+  @include button-sm;
+}
+
+.btn-lg {
+  @include button-lg;
+}
+
+// Button states
+.btn-loading {
+  position: relative;
+  pointer-events: none;
+  color: transparent;
+
+  &::after {
+    @include spinner(20px, $color-text-inverse);
+    @include absolute-center;
+    content: '';
+  }
+}
+
+// Icon button
+.btn-icon {
+  padding: $spacing-sm;
+  aspect-ratio: 1;
+}

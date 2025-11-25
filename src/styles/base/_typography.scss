@@ -1,0 +1,53 @@
+// ============================================
+// Typography Styles
+// ============================================
+
+@use '../abstracts' as *;
+
+.h1 {
+  @include heading-1;
+}
+
+.h2 {
+  @include heading-2;
+}
+
+.h3 {
+  @include heading-3;
+}
+
+.h4 {
+  @include heading-4;
+}
+
+.text-body {
+  @include text-body;
+}
+
+.text-small {
+  @include text-small;
+}
+
+.text-accent {
+  color: $color-text-accent;
+}
+
+.text-secondary {
+  color: $color-text-secondary;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-bold {
+  font-weight: $font-weight-bold;
+}
+
+.text-semibold {
+  font-weight: $font-weight-semibold;
+}
+
+.text-medium {
+  font-weight: $font-weight-medium;
+}

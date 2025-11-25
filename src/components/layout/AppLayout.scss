@@ -1,0 +1,15 @@
+@use '../../styles/abstracts' as *;
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: $color-background-primary;
+}
+
+.app-layout__body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  height: calc(100vh - 60px); // 60px = TopMenuBar height
+}

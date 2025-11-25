@@ -1,0 +1,47 @@
+// ============================================
+// Grid Layouts
+// ============================================
+
+@use '../abstracts' as *;
+
+.grid {
+  @include grid(3, $spacing-lg);
+}
+
+.grid-2 {
+  @include grid(2, $spacing-lg);
+}
+
+.grid-3 {
+  @include grid(3, $spacing-lg);
+}
+
+.grid-4 {
+  @include grid(4, $spacing-lg);
+}
+
+// Responsive grid
+.grid-responsive {
+  display: grid;
+  gap: $spacing-lg;
+  grid-template-columns: 1fr;
+
+  @include respond-to(sm) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to(md) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include respond-to(lg) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+// Auto-fit grid
+.grid-auto {
+  display: grid;
+  gap: $spacing-lg;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}

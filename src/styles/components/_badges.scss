@@ -1,0 +1,29 @@
+// ============================================
+// Badge Components
+// ============================================
+
+@use '../abstracts' as *;
+
+.badge {
+  @include badge;
+}
+
+.badge-success {
+  @include badge($color-status-success);
+}
+
+.badge-error {
+  @include badge($color-status-error);
+}
+
+.badge-warning {
+  @include badge($color-status-warning);
+}
+
+.badge-info {
+  @include badge($color-status-info);
+}
+
+.badge-primary {
+  @include badge($color-accent);
+}

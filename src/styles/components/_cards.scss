@@ -1,0 +1,46 @@
+// ============================================
+// Card Components
+// ============================================
+
+@use '../abstracts' as *;
+
+.card {
+  @include card-base;
+}
+
+.card-interactive {
+  @include card-interactive;
+}
+
+.card-elevated {
+  @include card-elevated;
+}
+
+.card-flat {
+  @include card-flat;
+}
+
+.card-glass {
+  @include card-glass;
+}
+
+// Card header
+.card-header {
+  @include flex-between;
+  margin-bottom: $spacing-md;
+  padding-bottom: $spacing-md;
+  border-bottom: $border-width-thin solid $color-border-secondary;
+}
+
+// Card body
+.card-body {
+  flex: 1;
+}
+
+// Card footer
+.card-footer {
+  @include flex-between;
+  margin-top: $spacing-md;
+  padding-top: $spacing-md;
+  border-top: $border-width-thin solid $color-border-secondary;
+}

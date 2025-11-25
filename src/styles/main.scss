@@ -1,0 +1,26 @@
+// ============================================
+// Main SCSS Entry Point
+// ImperioHub Design System
+// ============================================
+
+// 1. Abstracts (variables, mixins, functions)
+@use './abstracts' as *;
+
+// 2. Base styles (reset, typography)
+@use './base';
+
+// 3. Layout components
+@use './layout';
+
+// 4. UI Components
+@use './components';
+
+// 5. Utility helpers
+@use './utils';
+
+// ============================================
+// Custom scrollbar for the entire app
+// ============================================
+body {
+  @include custom-scrollbar;
+}

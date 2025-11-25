@@ -1,0 +1,197 @@
+// ============================================
+// Input Components
+// ============================================
+
+@use '../abstracts' as *;
+
+.input {
+  @include input-base;
+}
+
+// Input group
+.input-group {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+
+  .input {
+    border-radius: 0;
+
+    &:first-child {
+      border-top-left-radius: $border-radius-md;
+      border-bottom-left-radius: $border-radius-md;
+    }
+
+    &:last-child {
+      border-top-right-radius: $border-radius-md;
+      border-bottom-right-radius: $border-radius-md;
+    }
+
+    &:not(:last-child) {
+      border-right: none;
+    }
+  }
+}
+
+// Input addon
+.input-addon {
+  display: flex;
+  align-items: center;
+  padding: $spacing-sm $spacing-md;
+  background: $color-background-contrast;
+  border: $border-width-thin solid $color-border-primary;
+  color: $color-text-secondary;
+  font-size: $font-size-sm;
+
+  &:first-child {
+    border-top-left-radius: $border-radius-md;
+    border-bottom-left-radius: $border-radius-md;
+    border-right: none;
+  }
+
+  &:last-child {
+    border-top-right-radius: $border-radius-md;
+    border-bottom-right-radius: $border-radius-md;
+    border-left: none;
+  }
+}
+
+// Textarea
+.textarea {
+  @include input-base;
+  min-height: 100px;
+  resize: vertical;
+}
+
+// Select
+.select {
+  @include input-base;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23979797' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right $spacing-md center;
+  padding-right: $spacing-xl;
+  cursor: pointer;
+}
+
+// Checkbox
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-sm;
+  cursor: pointer;
+
+  input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: $border-width-medium solid $color-border-primary;
+    border-radius: $border-radius-xs;
+    background: $color-background-secondary;
+    cursor: pointer;
+    transition: all $transition-fast;
+    position: relative;
+
+    &:hover {
+      border-color: $color-accent;
+    }
+
+    &:checked {
+      background: $color-accent;
+      border-color: $color-accent;
+
+      &::after {
+        content: '✓';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: $color-text-inverse;
+        font-size: 14px;
+        font-weight: $font-weight-bold;
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-accent;
+      outline-offset: 2px;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Radio
+.radio {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-sm;
+  cursor: pointer;
+
+  input[type="radio"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: $border-width-medium solid $color-border-primary;
+    border-radius: 50%;
+    background: $color-background-secondary;
+    cursor: pointer;
+    transition: all $transition-fast;
+    position: relative;
+
+    &:hover {
+      border-color: $color-accent;
+    }
+
+    &:checked {
+      border-color: $color-accent;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 10px;
+        height: 10px;
+        background: $color-accent;
+        border-radius: 50%;
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-accent;
+      outline-offset: 2px;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Form group
+.form-group {
+  @include flex-column($spacing-xs);
+  margin-bottom: $spacing-md;
+
+  label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-text-primary;
+  }
+
+  .error-message {
+    font-size: $font-size-xs;
+    color: $color-status-error;
+  }
+
+  .help-text {
+    font-size: $font-size-xs;
+    color: $color-text-secondary;
+  }
+}

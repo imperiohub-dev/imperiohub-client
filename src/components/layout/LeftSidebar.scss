@@ -1,0 +1,102 @@
+@use '../../styles/abstracts' as *;
+
+.left-sidebar {
+  width: 280px;
+  background: $color-background-secondary;
+  border-right: $border-width-thin solid $color-border-primary;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  @include custom-scrollbar;
+}
+
+.left-sidebar__header {
+  padding: $spacing-lg;
+  border-bottom: $border-width-thin solid $color-border-secondary;
+
+  h3 {
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+    margin: 0;
+  }
+}
+
+.left-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+  padding: $spacing-md;
+}
+
+.left-sidebar__item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-md;
+  background: transparent;
+  border: $border-width-thin solid transparent;
+  border-radius: $border-radius-md;
+  cursor: pointer;
+  transition: all $transition-fast;
+  text-align: left;
+  width: 100%;
+  position: relative;
+
+  &:hover {
+    background: alpha($color-text-primary, 0.03);
+    border-color: $color-border-primary;
+  }
+
+  &.active {
+    background: alpha($color-accent, 0.1);
+    border-color: $color-accent;
+    color: $color-accent;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 60%;
+      background: $color-accent;
+      border-radius: 0 $border-radius-sm $border-radius-sm 0;
+    }
+
+    .left-sidebar__label {
+      color: $color-accent;
+      font-weight: $font-weight-semibold;
+    }
+  }
+}
+
+.left-sidebar__icon {
+  font-size: $font-size-lg;
+  flex-shrink: 0;
+  width: 24px;
+  text-align: center;
+}
+
+.left-sidebar__label {
+  flex: 1;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-regular;
+  color: $color-text-primary;
+  transition: all $transition-fast;
+}
+
+.left-sidebar__badge {
+  @include badge($color-status-info);
+  flex-shrink: 0;
+  font-size: $font-size-xs;
+  padding: 2px 8px;
+}
+
+// Responsive
+@include respond-to(md) {
+  .left-sidebar {
+    width: 240px;
+  }
+}

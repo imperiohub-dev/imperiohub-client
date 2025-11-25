@@ -1,0 +1,30 @@
+// ============================================
+// Container Layouts
+// ============================================
+
+@use '../abstracts' as *;
+
+.container {
+  @include container;
+}
+
+.container-sm {
+  @include container(768px);
+}
+
+.container-md {
+  @include container(1024px);
+}
+
+.container-lg {
+  @include container(1280px);
+}
+
+.container-xl {
+  @include container(1536px);
+}
+
+.container-fluid {
+  width: 100%;
+  padding: 0 $spacing-lg;
+}

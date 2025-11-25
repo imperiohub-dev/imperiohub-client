@@ -1,0 +1,81 @@
+@use '../../styles/abstracts' as *;
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background: $color-background-primary;
+  @include custom-scrollbar;
+}
+
+.main-content__breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-md $spacing-lg;
+  background: $color-background-secondary;
+  border-bottom: $border-width-thin solid $color-border-secondary;
+  font-size: $font-size-sm;
+
+  .breadcrumb {
+    color: $color-text-secondary;
+    transition: color $transition-fast;
+
+    &.active {
+      color: $color-text-accent;
+      font-weight: $font-weight-medium;
+    }
+  }
+
+  .separator {
+    color: $color-text-secondary;
+    opacity: 0.5;
+  }
+}
+
+.main-content__body {
+  flex: 1;
+  padding: $spacing-lg;
+}
+
+.main-content__loading {
+  @include flex-center;
+  @include flex-column($spacing-md);
+  height: 100%;
+
+  .spinner {
+    @include spinner(48px, $color-accent);
+  }
+
+  p {
+    color: $color-text-secondary;
+    font-size: $font-size-sm;
+  }
+}
+
+// Theme page styles
+.theme-page {
+  animation: pageSlideIn 0.3s ease-out;
+
+  @keyframes pageSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  h2 {
+    @include heading-2;
+    margin-bottom: $spacing-md;
+  }
+
+  p {
+    color: $color-text-secondary;
+    margin-bottom: $spacing-lg;
+  }
+}

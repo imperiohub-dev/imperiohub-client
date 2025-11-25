@@ -45,11 +45,17 @@ axiosInstance.interceptors.response.use(
 // ========================================
 export interface User {
   id: string;
-  discordId: string;
+  discordId?: string; // Bot Discord ID (puede ser null si no está vinculado)
+  discordOAuthId?: string; // OAuth Discord ID (para login web)
   username: string;
   email: string;
   avatar: string;
+  discordUsername?: string;
+  discordDiscriminator?: string;
+  discordAvatar?: string;
+  discordLinked: boolean; // Indica si tiene bot vinculado
   createdAt: string;
+  lastLogin?: string;
 }
 
 export interface AuthStatus {
@@ -57,7 +63,11 @@ export interface AuthStatus {
 }
 
 export interface AuthMeResponse {
+  success: boolean;
   user: User;
+  stats?: {
+    activeSessions: number;
+  };
 }
 
 export interface Session {
@@ -76,10 +86,14 @@ export interface SessionsResponse {
 export interface DiscordLinkCode {
   code: string;
   expiresAt: string;
+  expiresIn: number; // Segundos hasta expiración
 }
 
 export interface DiscordLinkCodeResponse {
-  linkCode: DiscordLinkCode;
+  success: boolean;
+  code: string;
+  expiresAt: string;
+  expiresIn: number;
 }
 
 export interface DiscordLinkRequest {
@@ -92,6 +106,15 @@ export interface DiscordLinkResponse {
   user?: User;
 }
 
+export interface LinkStatus {
+  hasOAuth: boolean; // Tiene login web
+  hasBot: boolean; // Tiene bot vinculado
+  discordUsername?: string;
+  discordDiscriminator?: string;
+  discordAvatar?: string;
+}
+
+// Retrocompatibilidad
 export interface DiscordLinkStatus {
   isLinked: boolean;
   discordUsername?: string;
@@ -158,40 +181,53 @@ export const authAPI = {
   },
 
   /**
-   * Genera un código de vinculación de Discord
+   * Genera un código de vinculación de Discord para el bot
+   * POST /api/v1/auth/link/generate
    */
   async generateLinkCode(): Promise<DiscordLinkCodeResponse> {
     const { data } = await axiosInstance.post<DiscordLinkCodeResponse>(
-      "/auth/discord/link/generate"
+      "/auth/link/generate"
     );
     return data;
   },
 
   /**
-   * Verifica el estado de vinculación de Discord
+   * Verifica el estado de vinculación completo (OAuth + Bot)
+   * GET /api/v1/auth/me
+   */
+  async getLinkStatus(): Promise<LinkStatus> {
+    const response = await authAPI.getMe();
+    return {
+      hasOAuth: !!response.user.discordOAuthId,
+      hasBot: response.user.discordLinked,
+      discordUsername: response.user.discordUsername,
+      discordDiscriminator: response.user.discordDiscriminator,
+      discordAvatar: response.user.discordAvatar,
+    };
+  },
+
+  /**
+   * Verifica el estado de vinculación de Discord (retrocompatibilidad)
+   * @deprecated Usar getLinkStatus() en su lugar
    */
   async checkDiscordLinkStatus(): Promise<DiscordLinkStatus> {
-    const { data } = await axiosInstance.get<DiscordLinkStatus>(
-      "/auth/discord/link-status"
-    );
-    return data;
+    const status = await this.getLinkStatus();
+    return {
+      isLinked: status.hasBot,
+      discordUsername: status.discordUsername,
+      discordId: undefined,
+    };
   },
 
   /**
-   * Alias para checkDiscordLinkStatus (retrocompatibilidad)
-   */
-  async getLinkStatus(): Promise<DiscordLinkStatus> {
-    return this.checkDiscordLinkStatus();
-  },
-
-  /**
-   * Desvincula la cuenta de Discord
+   * Desvincula la cuenta de Discord del bot
+   * POST /api/v1/auth/link/unlink
    */
   async unlinkDiscord(): Promise<{ success: boolean; message: string }> {
     const { data } = await axiosInstance.post<{
       success: boolean;
       message: string;
-    }>("/auth/discord/unlink");
+    }>("/auth/link/unlink");
     return data;
   },
 };

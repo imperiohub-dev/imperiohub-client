@@ -1,0 +1,195 @@
+@use '../styles/abstracts' as *;
+@use 'sass:color';
+
+.discord-link-card {
+  @include card-base;
+  @include flex-column($spacing-lg);
+
+  .card-header {
+    @include flex-column($spacing-sm);
+    border-bottom: $border-width-thin solid $color-border-primary;
+    padding-bottom: $spacing-md;
+
+    h3 {
+      @include heading-3;
+      margin: 0;
+    }
+
+    p {
+      @include text-body;
+      color: $color-text-secondary;
+      margin: 0;
+    }
+  }
+
+  .card-content {
+    @include flex-column($spacing-lg);
+  }
+
+  .alert {
+    padding: $spacing-md $spacing-lg;
+    border-radius: $border-radius-md;
+    @include text-body;
+
+    &.alert-error {
+      background: alpha($color-status-error, 0.1);
+      color: $color-status-error;
+      border: $border-width-thin solid alpha($color-status-error, 0.3);
+    }
+  }
+
+  .info-box {
+    @include card-flat;
+    border-left: $border-width-thick solid $color-status-info;
+
+    h4 {
+      @include heading-4;
+      margin: 0 0 $spacing-md 0;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: $spacing-lg;
+      color: $color-text-primary;
+
+      li {
+        margin-bottom: $spacing-sm;
+        @include text-body;
+      }
+    }
+  }
+
+  .code-display {
+    @include flex-column($spacing-lg);
+  }
+
+  .code-card {
+    background: linear-gradient(135deg, $color-primary 0%, $color-secondary 100%);
+    padding: $spacing-xl;
+    border-radius: $border-radius-lg;
+    text-align: center;
+    border: $border-width-thin solid $color-border-accent;
+
+    h4 {
+      @include heading-4;
+      margin: 0 0 $spacing-lg 0;
+      color: $color-accent;
+    }
+
+    .code-value {
+      font-size: $font-size-xxxl;
+      font-weight: $font-weight-bold;
+      letter-spacing: 0.5rem;
+      font-family: 'Courier New', monospace;
+      margin-bottom: $spacing-lg;
+      padding: $spacing-lg;
+      background: alpha($color-accent, 0.1);
+      border-radius: $border-radius-md;
+      color: $color-accent;
+    }
+
+    .expiry-time {
+      margin-top: $spacing-md;
+      @include text-small;
+      color: $color-text-secondary;
+
+      strong {
+        font-weight: $font-weight-bold;
+        color: $color-accent;
+      }
+    }
+  }
+
+  .instructions-visual {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: $spacing-md;
+    padding: $spacing-md 0;
+
+    .step {
+      @include flex-column($spacing-sm);
+      align-items: center;
+      text-align: center;
+
+      .step-number {
+        @include flex-center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: $color-primary;
+        color: $color-accent;
+        font-weight: $font-weight-bold;
+        font-size: $font-size-lg;
+      }
+
+      p {
+        @include text-body;
+        color: $color-text-primary;
+        margin: 0;
+
+        code {
+          display: block;
+          margin-top: $spacing-xs;
+          background: $color-background-secondary;
+          padding: $spacing-xs $spacing-sm;
+          border-radius: $border-radius-sm;
+          font-family: 'Courier New', monospace;
+          font-size: $font-size-sm;
+          color: $color-accent;
+        }
+      }
+    }
+  }
+
+  .note-box {
+    @include card-flat;
+    background: alpha($color-status-info, 0.1);
+    border-left: $border-width-thick solid $color-status-info;
+
+    p {
+      @include text-small;
+      color: $color-text-primary;
+      margin: 0 0 $spacing-xs 0;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      strong {
+        font-weight: $font-weight-bold;
+      }
+    }
+
+    .polling-indicator {
+      color: $color-status-info;
+      font-weight: $font-weight-medium;
+      animation: pulse 2s ease-in-out infinite;
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  // Buttons
+  .btn-primary {
+    @include button-primary;
+  }
+
+  .btn-large {
+    @include button-lg;
+  }
+
+  .btn-secondary {
+    @include button-secondary;
+  }
+
+  .btn-outline {
+    @include button-outline;
+  }
+}

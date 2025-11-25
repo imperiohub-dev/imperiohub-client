@@ -2,8 +2,8 @@
 @use 'sass:color';
 
 .link-discord-page {
-  @include container(800px);
-  @include flex-column($spacing-lg);
+  @include container(900px);
+  @include flex-column($spacing-xl);
   padding: $spacing-xl 0;
 
   .page-header {
@@ -15,7 +15,8 @@
     }
 
     .subtitle {
-      @include text-small;
+      @include text-body;
+      color: $color-text-secondary;
       margin: 0;
     }
   }
@@ -39,56 +40,82 @@
     }
   }
 
+  .status-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: $spacing-lg;
+  }
+
   .status-card {
     @include card-base;
-    display: flex;
-    align-items: center;
-    gap: $spacing-lg;
+    @include flex-column($spacing-md);
 
-    .status-icon {
-      font-size: $font-size-xxxl;
-    }
+    .status-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: $spacing-md;
+      border-bottom: $border-width-thin solid $color-border-primary;
 
-    .status-content {
-      flex: 1;
-
-      h2 {
-        @include heading-3;
-        margin: 0 0 $spacing-xs 0;
-      }
-
-      p {
-        @include text-body;
-        color: $color-text-secondary;
+      h3 {
+        @include heading-4;
         margin: 0;
       }
 
-      .discord-info {
-        margin-top: $spacing-md;
-        padding: $spacing-sm $spacing-md;
-        background: alpha($color-background-secondary, 0.5);
-        border-radius: $border-radius-sm;
+      .status-badge {
+        padding: $spacing-xs $spacing-md;
+        border-radius: $border-radius-xxl;
         @include text-small;
+        font-weight: $font-weight-medium;
 
-        strong {
-          color: $color-text-primary;
+        &.active {
+          background: alpha($color-status-success, 0.1);
+          color: $color-status-success;
+          border: $border-width-thin solid alpha($color-status-success, 0.3);
         }
 
-        .discord-id {
-          color: $color-text-secondary;
-          font-size: $font-size-xs;
+        &.inactive {
+          background: alpha($color-status-error, 0.1);
+          color: $color-status-error;
+          border: $border-width-thin solid alpha($color-status-error, 0.3);
         }
       }
     }
 
-    &.linked {
-      border-color: $color-status-success;
-      background: alpha($color-status-success, 0.05);
-    }
+    .status-content {
+      @include text-body;
 
-    &.unlinked {
-      border-color: $color-status-error;
-      background: alpha($color-status-error, 0.05);
+      .discord-info {
+        p {
+          margin: 0 0 $spacing-xs 0;
+          color: $color-text-primary;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          strong {
+            font-weight: $font-weight-bold;
+          }
+
+          &.discriminator {
+            @include text-small;
+            color: $color-text-secondary;
+          }
+        }
+      }
+
+      .bot-info {
+        .success-text {
+          margin: 0;
+          color: $color-status-success;
+        }
+      }
+
+      .text-secondary {
+        margin: 0;
+        color: $color-text-secondary;
+      }
     }
   }
 
@@ -132,123 +159,7 @@
     }
   }
 
-  .instructions {
-    @include card-base;
-
-    h3 {
-      @include heading-3;
-      margin: 0 0 $spacing-md 0;
-    }
-
-    ol {
-      margin: 0 0 $spacing-lg 0;
-      padding-left: $spacing-lg;
-      color: $color-text-secondary;
-
-      li {
-        margin-bottom: $spacing-sm;
-        @include text-body;
-        line-height: $line-height-relaxed;
-
-        code {
-          background: $color-background-secondary;
-          padding: $spacing-xs $spacing-sm;
-          border-radius: $border-radius-sm;
-          font-family: 'Courier New', monospace;
-          font-size: $font-size-sm;
-          color: $color-accent;
-        }
-      }
-    }
-  }
-
-  .code-display {
-    @include card-base;
-    @include flex-column($spacing-lg);
-
-    .code-card {
-      background: linear-gradient(135deg, $color-primary 0%, $color-secondary 100%);
-      padding: $spacing-xl;
-      border-radius: $border-radius-lg;
-      text-align: center;
-      border: $border-width-thin solid $color-border-accent;
-
-      h3 {
-        @include heading-4;
-        margin: 0 0 $spacing-lg 0;
-        color: $color-accent;
-      }
-
-      .code-value {
-        font-size: $font-size-xxxl;
-        font-weight: $font-weight-bold;
-        letter-spacing: 0.5rem;
-        font-family: 'Courier New', monospace;
-        margin-bottom: $spacing-lg;
-        padding: $spacing-lg;
-        background: alpha($color-accent, 0.1);
-        border-radius: $border-radius-md;
-        color: $color-accent;
-      }
-
-      .expiry-time {
-        margin-top: $spacing-md;
-        @include text-small;
-        color: $color-text-secondary;
-
-        strong {
-          font-weight: $font-weight-bold;
-          color: $color-accent;
-        }
-      }
-    }
-
-    .next-steps {
-      @include card-flat;
-
-      h4 {
-        @include heading-4;
-        margin: 0 0 $spacing-sm 0;
-      }
-
-      p {
-        @include text-body;
-        color: $color-text-secondary;
-        margin: 0 0 $spacing-sm 0;
-
-        &.note {
-          @include text-small;
-          font-style: italic;
-          color: $color-text-secondary;
-        }
-      }
-
-      .command-example {
-        margin: $spacing-md 0;
-        padding: $spacing-md;
-        background: $color-background-primary;
-        border-radius: $border-radius-sm;
-        border: $border-width-thin solid $color-border-primary;
-
-        code {
-          color: $color-status-success;
-          font-family: 'Courier New', monospace;
-          font-size: $font-size-md;
-        }
-      }
-    }
-  }
-
-  // Buttons using existing mixins
-  .btn-primary {
-    @include button-primary;
-    @include button-lg;
-  }
-
-  .btn-secondary {
-    @include button-secondary;
-  }
-
+  // Buttons
   .btn-danger {
     @include button-primary;
     background: $color-status-error;
@@ -256,9 +167,5 @@
     &:hover:not(:disabled) {
       background: color.scale($color-status-error, $lightness: -10%);
     }
-  }
-
-  .btn-outline {
-    @include button-outline;
   }
 }

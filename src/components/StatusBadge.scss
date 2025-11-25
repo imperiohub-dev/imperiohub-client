@@ -1,0 +1,27 @@
+@use '../styles/abstracts' as *;
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-xs;
+  padding: $spacing-xs $spacing-md;
+  border-radius: $border-radius-xxl;
+  @include text-small;
+  font-weight: $font-weight-medium;
+
+  &.success {
+    background: alpha($color-status-success, 0.1);
+    color: $color-status-success;
+    border: $border-width-thin solid alpha($color-status-success, 0.3);
+  }
+
+  &.warning {
+    background: alpha($color-status-warning, 0.1);
+    color: $color-status-warning;
+    border: $border-width-thin solid alpha($color-status-warning, 0.3);
+  }
+
+  span {
+    display: inline-block;
+  }
+}

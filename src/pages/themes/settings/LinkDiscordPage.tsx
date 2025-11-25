@@ -1,46 +1,13 @@
-import { useState, useEffect } from 'react';
-import { authAPI, type DiscordLinkCode, type DiscordLinkStatus } from '../../../services/api';
+import { useState } from 'react';
+import { useDiscordLink } from '../../../hooks/useDiscordLink';
+import { DiscordLinkCard } from '../../../components/DiscordLinkCard';
+import { authAPI } from '../../../services/api';
 import './LinkDiscordPage.scss';
 
 export function LinkDiscordPage() {
-  const [linkStatus, setLinkStatus] = useState<DiscordLinkStatus | null>(null);
-  const [linkCode, setLinkCode] = useState<DiscordLinkCode | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [generating, setGenerating] = useState(false);
+  const { linkStatus, loading, error, refetch } = useDiscordLink();
   const [unlinking, setUnlinking] = useState(false);
-
-  useEffect(() => {
-    loadLinkStatus();
-  }, []);
-
-  const loadLinkStatus = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const status = await authAPI.getLinkStatus();
-      setLinkStatus(status);
-    } catch (err) {
-      setError('Error al cargar el estado de vinculación');
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleGenerateCode = async () => {
-    try {
-      setGenerating(true);
-      setError(null);
-      const response = await authAPI.generateLinkCode();
-      setLinkCode(response.linkCode);
-    } catch (err) {
-      setError('Error al generar el código de vinculación');
-      console.error(err);
-    } finally {
-      setGenerating(false);
-    }
-  };
+  const [unlinkError, setUnlinkError] = useState<string | null>(null);
 
   const handleUnlink = async () => {
     if (!confirm('¿Estás seguro de que deseas desvincular tu cuenta de Discord?')) {
@@ -49,53 +16,21 @@ export function LinkDiscordPage() {
 
     try {
       setUnlinking(true);
-      setError(null);
+      setUnlinkError(null);
       await authAPI.unlinkDiscord();
-      setLinkCode(null);
-      await loadLinkStatus();
-    } catch (err) {
-      setError('Error al desvincular Discord');
-      console.error(err);
+      await refetch();
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.message || 'Error al desvincular Discord';
+      setUnlinkError(errorMessage);
+      console.error('Error unlinking Discord:', err);
     } finally {
       setUnlinking(false);
     }
   };
 
-  const handleCopyCode = () => {
-    if (linkCode) {
-      navigator.clipboard.writeText(linkCode.code);
-    }
+  const handleLinked = () => {
+    refetch();
   };
-
-  const getRemainingTime = () => {
-    if (!linkCode) return null;
-
-    const now = new Date().getTime();
-    const expiresAt = new Date(linkCode.expiresAt).getTime();
-    const remaining = Math.max(0, expiresAt - now);
-    const minutes = Math.floor(remaining / 60000);
-    const seconds = Math.floor((remaining % 60000) / 1000);
-
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-  };
-
-  const [remainingTime, setRemainingTime] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (linkCode) {
-      const interval = setInterval(() => {
-        const time = getRemainingTime();
-        setRemainingTime(time);
-
-        if (time === '0:00') {
-          setLinkCode(null);
-          clearInterval(interval);
-        }
-      }, 1000);
-
-      return () => clearInterval(interval);
-    }
-  }, [linkCode]);
 
   if (loading) {
     return (
@@ -108,43 +43,83 @@ export function LinkDiscordPage() {
   return (
     <div className="link-discord-page">
       <div className="page-header">
-        <h1>Vincular Discord</h1>
+        <h1>Cuenta de Discord</h1>
         <p className="subtitle">
-          Conecta tu cuenta de Discord para recibir notificaciones y usar comandos desde Discord
+          Gestiona la vinculación de tu cuenta de Discord para login web y comandos del bot
         </p>
       </div>
 
-      {error && (
+      {(error || unlinkError) && (
         <div className="alert alert-error">
-          {error}
+          {error || unlinkError}
         </div>
       )}
 
-      {linkStatus?.isLinked ? (
-        <div className="linked-section">
-          <div className="status-card linked">
-            <div className="status-icon">✅</div>
-            <div className="status-content">
-              <h2>Cuenta Vinculada</h2>
-              <p>Tu cuenta de Discord está vinculada exitosamente</p>
-              {linkStatus.discordUsername && (
-                <div className="discord-info">
-                  <strong>Discord:</strong> {linkStatus.discordUsername}
-                  {linkStatus.discordId && (
-                    <span className="discord-id"> (ID: {linkStatus.discordId})</span>
-                  )}
-                </div>
-              )}
+      <div className="status-cards">
+        {/* OAuth Status */}
+        <div className="status-card">
+          <div className="status-header">
+            <h3>Login Web</h3>
+            <div className={`status-badge ${linkStatus?.hasOAuth ? 'active' : 'inactive'}`}>
+              {linkStatus?.hasOAuth ? '✅ Conectado' : '❌ No conectado'}
             </div>
           </div>
+          <div className="status-content">
+            {linkStatus?.hasOAuth ? (
+              <div className="discord-info">
+                <p><strong>Usuario:</strong> {linkStatus.discordUsername}</p>
+                {linkStatus.discordDiscriminator && (
+                  <p className="discriminator">#{linkStatus.discordDiscriminator}</p>
+                )}
+              </div>
+            ) : (
+              <p className="text-secondary">
+                No has iniciado sesión con Discord OAuth.
+                Usa el botón de login para conectar.
+              </p>
+            )}
+          </div>
+        </div>
 
+        {/* Bot Status */}
+        <div className="status-card">
+          <div className="status-header">
+            <h3>Discord Bot</h3>
+            <div className={`status-badge ${linkStatus?.hasBot ? 'active' : 'inactive'}`}>
+              {linkStatus?.hasBot ? '✅ Vinculado' : '❌ No vinculado'}
+            </div>
+          </div>
+          <div className="status-content">
+            {linkStatus?.hasBot ? (
+              <div className="bot-info">
+                <p className="success-text">
+                  Tu cuenta está vinculada con el bot de Discord.
+                  Puedes usar comandos en Discord.
+                </p>
+              </div>
+            ) : (
+              <p className="text-secondary">
+                El bot de Discord no está vinculado a tu cuenta.
+                Vincula el bot para usar comandos.
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Show link card if bot is not linked */}
+      {!linkStatus?.hasBot && <DiscordLinkCard onLinked={handleLinked} />}
+
+      {/* Show unlink button and commands if bot is linked */}
+      {linkStatus?.hasBot && (
+        <>
           <div className="actions">
             <button
               className="btn btn-danger"
               onClick={handleUnlink}
               disabled={unlinking}
             >
-              {unlinking ? 'Desvinculando...' : 'Desvincular Discord'}
+              {unlinking ? 'Desvinculando...' : 'Desvincular Bot'}
             </button>
           </div>
 
@@ -159,78 +134,7 @@ export function LinkDiscordPage() {
               <li><code>/my-bots</code> - Listar todos tus bots</li>
             </ul>
           </div>
-        </div>
-      ) : (
-        <div className="unlinked-section">
-          <div className="status-card unlinked">
-            <div className="status-icon">❌</div>
-            <div className="status-content">
-              <h2>Cuenta No Vinculada</h2>
-              <p>Tu cuenta de Discord no está vinculada a esta cuenta web</p>
-            </div>
-          </div>
-
-          {!linkCode ? (
-            <div className="instructions">
-              <h3>Cómo vincular tu cuenta:</h3>
-              <ol>
-                <li>Haz clic en "Generar Código" abajo</li>
-                <li>Copia el código de 6 dígitos</li>
-                <li>Ve a Discord y usa el comando <code>/link &lt;código&gt;</code></li>
-                <li>Tu cuenta quedará vinculada automáticamente</li>
-              </ol>
-
-              <button
-                className="btn btn-primary btn-large"
-                onClick={handleGenerateCode}
-                disabled={generating}
-              >
-                {generating ? 'Generando...' : 'Generar Código'}
-              </button>
-            </div>
-          ) : (
-            <div className="code-display">
-              <div className="code-card">
-                <h3>Tu Código de Vinculación</h3>
-                <div className="code-value">
-                  {linkCode.code}
-                </div>
-                <button
-                  className="btn btn-secondary"
-                  onClick={handleCopyCode}
-                >
-                  📋 Copiar Código
-                </button>
-                {remainingTime && (
-                  <div className="expiry-time">
-                    Expira en: <strong>{remainingTime}</strong>
-                  </div>
-                )}
-              </div>
-
-              <div className="next-steps">
-                <h4>Siguiente paso:</h4>
-                <p>
-                  Ve a Discord y ejecuta el comando:
-                </p>
-                <div className="command-example">
-                  <code>/link {linkCode.code}</code>
-                </div>
-                <p className="note">
-                  El código expira en 5 minutos. Si expira, genera uno nuevo.
-                </p>
-              </div>
-
-              <button
-                className="btn btn-outline"
-                onClick={handleGenerateCode}
-                disabled={generating}
-              >
-                Generar Nuevo Código
-              </button>
-            </div>
-          )}
-        </div>
+        </>
       )}
     </div>
   );

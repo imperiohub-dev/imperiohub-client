@@ -1,4 +1,19 @@
 import axios from "axios";
+import type {
+  TradingBot,
+  UserTraderBot,
+  ApiKey,
+  UserTraderBotConfiguration,
+  TradingInstance,
+  UserTraderBotOperation,
+  ApiResponse,
+  PaginatedResponse,
+  ApiKeyVerification,
+  BotConfigurationFormData,
+  TradingInstanceFormData,
+  ApiKeyFormData,
+  UserBotFormData,
+} from "../types/trading";
 
 // Configuración de la API - Backend URL base (sin /api)
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
@@ -261,5 +276,132 @@ export const api = {
   async patch<T>(endpoint: string, body: unknown): Promise<T> {
     const { data } = await axiosInstance.patch<T>(endpoint, body);
     return data;
+  },
+};
+
+// ========================================
+// SERVICIO DE TRADING (tradingAPI)
+// ========================================
+export const tradingAPI = {
+  // ============ BOTS ============
+  async getBots(): Promise<ApiResponse<TradingBot[]>> {
+    return api.get("/bots");
+  },
+
+  async getBotById(botId: string): Promise<ApiResponse<TradingBot>> {
+    return api.get(`/bots/${botId}`);
+  },
+
+  async getMyBots(includeConfig = false): Promise<ApiResponse<UserTraderBot[]>> {
+    const query = includeConfig ? "?includeConfig=true" : "";
+    return api.get(`/users/me/bots${query}`);
+  },
+
+  async subscribeToBot(data: UserBotFormData): Promise<ApiResponse<UserTraderBot>> {
+    return api.post("/users/me/bots", data);
+  },
+
+  async updateUserBot(
+    userBotId: string,
+    data: Partial<Pick<UserTraderBot, "alias" | "isActive" | "apiKeyId">>
+  ): Promise<ApiResponse<UserTraderBot>> {
+    return api.patch(`/users/me/bots/${userBotId}`, data);
+  },
+
+  async toggleBot(userBotId: string, isActive: boolean): Promise<ApiResponse<UserTraderBot>> {
+    return api.post(`/users/me/bots/${userBotId}/toggle`, { isActive });
+  },
+
+  async deleteUserBot(userBotId: string): Promise<ApiResponse<void>> {
+    return api.delete(`/users/me/bots/${userBotId}`);
+  },
+
+  // ============ CONFIGURATION ============
+  async getBotConfiguration(
+    userBotId: string
+  ): Promise<ApiResponse<UserTraderBotConfiguration>> {
+    return api.get(`/users/me/bots/${userBotId}/configuration`);
+  },
+
+  async createBotConfiguration(
+    userBotId: string,
+    data: BotConfigurationFormData
+  ): Promise<ApiResponse<UserTraderBotConfiguration>> {
+    return api.post(`/users/me/bots/${userBotId}/configuration`, data);
+  },
+
+  async updateBotConfiguration(
+    userBotId: string,
+    data: Partial<BotConfigurationFormData>
+  ): Promise<ApiResponse<UserTraderBotConfiguration>> {
+    return api.patch(`/users/me/bots/${userBotId}/configuration`, data);
+  },
+
+  // ============ TRADING INSTANCES ============
+  async getTradingInstances(
+    userBotId: string,
+    isActive?: boolean
+  ): Promise<ApiResponse<TradingInstance[]>> {
+    const query = isActive !== undefined ? `?isActive=${isActive}` : "";
+    return api.get(`/users/me/bots/${userBotId}/instances${query}`);
+  },
+
+  async createTradingInstance(
+    userBotId: string,
+    data: TradingInstanceFormData
+  ): Promise<ApiResponse<TradingInstance>> {
+    return api.post(`/users/me/bots/${userBotId}/instances`, data);
+  },
+
+  async updateTradingInstance(
+    userBotId: string,
+    instanceId: string,
+    data: Partial<TradingInstanceFormData & { isActive: boolean }>
+  ): Promise<ApiResponse<TradingInstance>> {
+    return api.patch(`/users/me/bots/${userBotId}/instances/${instanceId}`, data);
+  },
+
+  async deleteTradingInstance(
+    userBotId: string,
+    instanceId: string
+  ): Promise<ApiResponse<void>> {
+    return api.delete(`/users/me/bots/${userBotId}/instances/${instanceId}`);
+  },
+
+  async getInstanceOperations(
+    userBotId: string,
+    instanceId: string,
+    params?: { status?: "OPEN" | "CLOSE"; limit?: number; offset?: number }
+  ): Promise<PaginatedResponse<UserTraderBotOperation>> {
+    const query = new URLSearchParams();
+    if (params?.status) query.append("status", params.status);
+    if (params?.limit) query.append("limit", params.limit.toString());
+    if (params?.offset) query.append("offset", params.offset.toString());
+    const queryString = query.toString() ? `?${query.toString()}` : "";
+    return api.get(`/users/me/bots/${userBotId}/instances/${instanceId}/operations${queryString}`);
+  },
+
+  // ============ API KEYS ============
+  async getApiKeys(): Promise<ApiResponse<ApiKey[]>> {
+    return api.get("/users/me/api-keys");
+  },
+
+  async createApiKey(data: ApiKeyFormData): Promise<ApiResponse<ApiKey>> {
+    return api.post("/users/me/api-keys", data);
+  },
+
+  async updateApiKey(
+    apiKeyId: string,
+    data: Partial<Pick<ApiKeyFormData, "apiKey" | "apiSecret">>
+  ): Promise<ApiResponse<ApiKey>> {
+    return api.patch(`/users/me/api-keys/${apiKeyId}`, data);
+  },
+
+  async deleteApiKey(apiKeyId: string): Promise<ApiResponse<void>> {
+    return api.delete(`/users/me/api-keys/${apiKeyId}`);
+  },
+
+  async verifyApiKey(apiKeyId: string): Promise<ApiResponse<ApiKeyVerification>> {
+    return api.post(`/users/me/api-keys/${apiKeyId}/verify`, {});
   },
 };

@@ -20,6 +20,12 @@ import { ReportsOverview } from "../pages/themes/reports/ReportsOverview";
 // Settings Theme Components
 import { LinkDiscordPage } from "../pages/themes/settings/LinkDiscordPage";
 
+// Trading Theme Components
+import { MarketplacePage } from "../pages/themes/trading/MarketplacePage";
+import { MyBotsPage } from "../pages/themes/trading/MyBotsPage";
+import { ApiKeysPage } from "../pages/themes/trading/ApiKeysPage";
+import { PerformancePage } from "../pages/themes/trading/PerformancePage";
+
 export const navigationConfig: NavigationConfig = {
   defaultTheme: "sales",
   themes: [
@@ -173,14 +179,39 @@ export const navigationConfig: NavigationConfig = {
       id: "Trading",
       label: "Trading",
       icon: "🏪",
+      defaultSubTheme: "marketplace",
       subThemes: [
         {
-          id: "settings",
-          label: "settings",
-          path: "/trading/settings",
-          icon: "⚙️",
-          component: LinkDiscordPage,
-          description: "Configura tu trading",
+          id: "marketplace",
+          label: "Marketplace",
+          path: "/trading/marketplace",
+          icon: "🛒",
+          component: MarketplacePage,
+          description: "Ver bots disponibles",
+        },
+        {
+          id: "my-bots",
+          label: "Mis Bots",
+          path: "/trading/my-bots",
+          icon: "🤖",
+          component: MyBotsPage,
+          description: "Gestionar mis bots",
+        },
+        {
+          id: "api-keys",
+          label: "API Keys",
+          path: "/trading/api-keys",
+          icon: "🔑",
+          component: ApiKeysPage,
+          description: "Configurar API keys",
+        },
+        {
+          id: "performance",
+          label: "Rendimiento",
+          path: "/trading/performance",
+          icon: "📊",
+          component: PerformancePage,
+          description: "Ver rendimiento de bots",
         },
       ],
     },

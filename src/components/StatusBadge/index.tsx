@@ -1,4 +1,4 @@
-import './StatusBadge.scss';
+import './index.module.scss';
 
 interface StatusBadgeProps {
   isLinked: boolean;

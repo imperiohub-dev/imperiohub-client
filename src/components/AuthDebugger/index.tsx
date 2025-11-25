@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { authAPI } from '../services/api';
+import { authAPI } from '../../services/api';
 
 /**
  * Componente de debugging para verificar el estado de autenticación

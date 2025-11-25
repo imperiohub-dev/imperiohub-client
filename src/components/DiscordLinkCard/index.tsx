@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { authAPI, type DiscordLinkCodeResponse } from '../services/api';
-import './DiscordLinkCard.scss';
+import { authAPI, type DiscordLinkCodeResponse } from '../../services/api';
+import './index.module.scss';
 
 interface DiscordLinkCardProps {
   onLinked?: () => void;

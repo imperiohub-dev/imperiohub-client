@@ -1,0 +1,130 @@
+@use "../../styles/abstracts" as *;
+
+.bot-marketplace-card {
+  @include card-base;
+  @include flex-column($spacing-md);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .card-header {
+    @include flex-column($spacing-sm);
+    padding-bottom: $spacing-md;
+    border-bottom: $border-width-thin solid $color-border-primary;
+
+    h3 {
+      @include heading-3;
+      margin: 0;
+      color: $color-accent;
+    }
+
+    .badges {
+      display: flex;
+      gap: $spacing-sm;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      padding: $spacing-xs $spacing-sm;
+      border-radius: $border-radius-sm;
+      @include text-small;
+      font-weight: $font-weight-medium;
+
+      &.badge-market {
+        background: alpha($color-status-info, 0.2);
+        color: $color-status-info;
+        border: $border-width-thin solid alpha($color-status-info, 0.3);
+      }
+
+      &.badge-position {
+        border: $border-width-thin solid;
+
+        &.long {
+          background: alpha($color-status-success, 0.2);
+          color: $color-status-success;
+          border-color: alpha($color-status-success, 0.3);
+        }
+
+        &.short {
+          background: alpha($color-status-error, 0.2);
+          color: $color-status-error;
+          border-color: alpha($color-status-error, 0.3);
+        }
+      }
+    }
+  }
+
+  .card-body {
+    @include flex-column($spacing-md);
+    flex: 1;
+
+    .description {
+      @include text-body;
+      color: $color-text-secondary;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .backtesting-stats {
+      @include card-flat;
+      background: alpha($color-primary, 0.3);
+      border-left: $border-width-thick solid $color-accent;
+
+      h4 {
+        @include heading-4;
+        margin: 0 0 $spacing-sm 0;
+        color: $color-accent;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: $spacing-md;
+
+        .stat {
+          @include flex-column($spacing-xs);
+
+          .stat-label {
+            @include text-small;
+            color: $color-text-secondary;
+          }
+
+          .stat-value {
+            @include text-body;
+            font-weight: $font-weight-bold;
+            color: $color-accent;
+          }
+        }
+      }
+    }
+  }
+
+  .card-footer {
+    @include flex-column($spacing-md);
+    padding-top: $spacing-md;
+    border-top: $border-width-thin solid $color-border-primary;
+
+    .pricing {
+      @include flex-column($spacing-xs);
+
+      .price {
+        @include heading-3;
+        color: $color-accent;
+        margin: 0;
+      }
+
+      .vip-price {
+        @include text-small;
+        color: $color-text-secondary;
+      }
+    }
+
+    .btn-primary {
+      @include button-primary;
+      width: 100%;
+    }
+  }
+}

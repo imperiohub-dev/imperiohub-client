@@ -1,0 +1,179 @@
+@use "../../styles/abstracts" as *;
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  @include flex-center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: $color-background-primary;
+  border-radius: $border-radius-lg;
+  border: $border-width-thin solid $color-border-primary;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+
+  @include custom-scrollbar;
+}
+
+.modal-header {
+  @include flex-between;
+  padding: $spacing-lg;
+  border-bottom: $border-width-thin solid $color-border-primary;
+
+  h2 {
+    @include heading-2;
+    margin: 0;
+    color: $color-accent;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: $font-size-xl;
+    color: $color-text-secondary;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    @include flex-center;
+    border-radius: $border-radius-sm;
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background: alpha($color-status-error, 0.2);
+      color: $color-status-error;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.modal-body {
+  padding: $spacing-lg;
+  @include flex-column($spacing-xl);
+}
+
+.bot-info {
+  @include flex-column($spacing-md);
+  padding: $spacing-md;
+  background: alpha($color-primary, 0.3);
+  border-radius: $border-radius-md;
+  border-left: $border-width-thick solid $color-accent;
+
+  h3 {
+    @include heading-3;
+    margin: 0;
+    color: $color-accent;
+  }
+
+  p {
+    @include text-body;
+    color: $color-text-secondary;
+    margin: 0;
+  }
+
+  .price-display {
+    @include flex-between;
+    align-items: center;
+    padding-top: $spacing-sm;
+    border-top: $border-width-thin solid $color-border-primary;
+
+    .price {
+      @include heading-3;
+      color: $color-accent;
+      margin: 0;
+    }
+
+    .billing-model {
+      @include text-small;
+      color: $color-text-secondary;
+      text-transform: uppercase;
+    }
+  }
+}
+
+.purchase-form {
+  @include flex-column($spacing-lg);
+}
+
+.form-group {
+  @include flex-column($spacing-sm);
+
+  label {
+    @include text-body;
+    font-weight: $font-weight-medium;
+    color: $color-text-primary;
+  }
+
+  input,
+  select {
+    padding: $spacing-md;
+    background: $color-background-secondary;
+    border: $border-width-thin solid $color-border-primary;
+    border-radius: $border-radius-md;
+    color: $color-text-primary;
+    @include text-body;
+    transition: all 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: $color-accent;
+      box-shadow: 0 0 0 2px alpha($color-accent, 0.2);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    &::placeholder {
+      color: $color-text-secondary;
+    }
+  }
+
+  select {
+    cursor: pointer;
+
+    option {
+      background: $color-background-primary;
+      color: $color-text-primary;
+    }
+  }
+
+  .helper-text {
+    @include text-small;
+    color: $color-status-warning;
+    margin: 0;
+  }
+}
+
+.modal-actions {
+  display: flex;
+  gap: $spacing-md;
+  justify-content: flex-end;
+
+  .btn {
+    min-width: 120px;
+  }
+
+  .btn-outline {
+    @include button-outline;
+  }
+
+  .btn-primary {
+    @include button-primary;
+  }
+}

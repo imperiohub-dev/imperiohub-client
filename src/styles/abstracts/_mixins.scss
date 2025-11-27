@@ -462,3 +462,94 @@
     border-radius: $border-radius-sm;
   }
 }
+
+// ============================================
+// RESPONSIVE TYPOGRAPHY
+// ============================================
+// These mixins automatically scale typography for mobile devices
+
+// Responsive heading 1
+@mixin heading-responsive-1 {
+  font-family: $font-family-primary;
+  font-size: $font-size-xxxl;
+  font-weight: $font-weight-bold;
+  line-height: $line-height-tight;
+  color: $color-text-primary;
+
+  @media (max-width: $breakpoint-mobile-max) {
+    font-size: $font-size-xl; // 40px → 28px
+  }
+}
+
+// Responsive heading 2
+@mixin heading-responsive-2 {
+  font-family: $font-family-primary;
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  line-height: $line-height-tight;
+  color: $color-text-primary;
+
+  @media (max-width: $breakpoint-mobile-max) {
+    font-size: $font-size-lg; // 32px → 20px
+  }
+}
+
+// Responsive heading 3
+@mixin heading-responsive-3 {
+  font-family: $font-family-primary;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-normal;
+  color: $color-text-primary;
+
+  @media (max-width: $breakpoint-mobile-max) {
+    font-size: $font-size-md; // 28px → 16px
+  }
+}
+
+// Responsive heading 4
+@mixin heading-responsive-4 {
+  font-family: $font-family-primary;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-normal;
+  color: $color-text-primary;
+
+  @media (max-width: $breakpoint-mobile-max) {
+    font-size: $font-size-md; // 20px → 16px
+  }
+}
+
+// Responsive body text
+@mixin text-responsive {
+  font-family: $font-family-secondary;
+  font-size: $font-size-md;
+  font-weight: $font-weight-regular;
+  line-height: $line-height-relaxed;
+  color: $color-text-primary;
+
+  @media (max-width: $breakpoint-mobile-max) {
+    font-size: $font-size-sm; // 16px → 14px
+  }
+}
+
+// Responsive container with mobile padding
+@mixin container-responsive($max-width: 1280px) {
+  width: 100%;
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 0 $spacing-lg;
+
+  @media (max-width: $breakpoint-mobile-max) {
+    padding: 0 $spacing-md; // Reduce padding on mobile
+  }
+}
+
+// Responsive section spacing
+@mixin section-spacing {
+  padding: $spacing-xxxl 0;
+
+  @media (max-width: $breakpoint-mobile-max) {
+    padding: $spacing-xl 0; // Reduce spacing on mobile
+  }
+}

@@ -70,6 +70,43 @@ export interface UserTraderBot {
   traderBotConfiguration?: UserTraderBotConfiguration;
 }
 
+// Raw configuration values (as stored in database)
+export interface RawBotConfiguration {
+  portfolio: number;
+  perTradePercent: number;
+  maxAmountPerTrade: number;
+  maxDrawdownPercent: number;
+  maxLeverage: number;
+  profitTargetRatio: number;
+}
+
+// Processed configuration values (calculated with real balance)
+export interface ProcessedBotConfiguration {
+  usdtBalance: number;
+  portfolio: number;
+  perTradePercent: number;
+  maxAmountPerTrade: number;
+  maxDrawdownPercent: number;
+  maxLeverage: number;
+  profitTargetRatio: number;
+  riskPerTrade: number;
+  effectiveRiskPerTrade: number;
+}
+
+// Configuration formulas (explanatory text)
+export interface ConfigurationFormulas {
+  portfolioCalculation: string;
+  perTradePercentCalculation: string;
+  riskPerTradeCalculation: string;
+  maxDrawdownCalculation: string;
+}
+
+// Error when processing configuration
+export interface ProcessedError {
+  message: string;
+  code: string;
+}
+
 // Bot Configuration
 export interface UserTraderBotConfiguration {
   id: string;
@@ -83,6 +120,10 @@ export interface UserTraderBotConfiguration {
   createdAt: string;
   updatedAt: string;
   tradingInstances?: TradingInstance[];
+  raw?: RawBotConfiguration;
+  processed?: ProcessedBotConfiguration;
+  processedError?: ProcessedError;
+  formulas?: ConfigurationFormulas;
 }
 
 // Trading Instance

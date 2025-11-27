@@ -302,12 +302,16 @@ export const tradingAPI = {
     return api.get(`/bots/${botId}`);
   },
 
-  async getMyBots(includeConfig = false): Promise<ApiResponse<UserTraderBot[]>> {
+  async getMyBots(
+    includeConfig = false
+  ): Promise<ApiResponse<UserTraderBot[]>> {
     const query = includeConfig ? "?includeConfig=true" : "";
     return api.get(`/users/me/bots${query}`);
   },
 
-  async subscribeToBot(data: UserBotFormData): Promise<ApiResponse<UserTraderBot>> {
+  async subscribeToBot(
+    data: UserBotFormData
+  ): Promise<ApiResponse<UserTraderBot>> {
     return api.post("/users/me/bots", data);
   },
 
@@ -318,7 +322,10 @@ export const tradingAPI = {
     return api.patch(`/users/me/bots/${userBotId}`, data);
   },
 
-  async toggleBot(userBotId: string, isActive: boolean): Promise<ApiResponse<UserTraderBot>> {
+  async toggleBot(
+    userBotId: string,
+    isActive: boolean
+  ): Promise<ApiResponse<UserTraderBot>> {
     return api.post(`/users/me/bots/${userBotId}/toggle`, { isActive });
   },
 
@@ -368,7 +375,10 @@ export const tradingAPI = {
     instanceId: string,
     data: Partial<TradingInstanceFormData & { isActive: boolean }>
   ): Promise<ApiResponse<TradingInstance>> {
-    return api.patch(`/users/me/bots/${userBotId}/instances/${instanceId}`, data);
+    return api.patch(
+      `/users/me/bots/${userBotId}/instances/${instanceId}`,
+      data
+    );
   },
 
   async deleteTradingInstance(
@@ -388,7 +398,9 @@ export const tradingAPI = {
     if (params?.limit) query.append("limit", params.limit.toString());
     if (params?.offset) query.append("offset", params.offset.toString());
     const queryString = query.toString() ? `?${query.toString()}` : "";
-    return api.get(`/users/me/bots/${userBotId}/instances/${instanceId}/operations${queryString}`);
+    return api.get(
+      `/users/me/bots/${userBotId}/instances/${instanceId}/operations${queryString}`
+    );
   },
 
   // ============ API KEYS ============
@@ -411,7 +423,9 @@ export const tradingAPI = {
     return api.delete(`/users/me/api-keys/${apiKeyId}`);
   },
 
-  async verifyApiKey(apiKeyId: string): Promise<ApiResponse<ApiKeyVerification>> {
+  async verifyApiKey(
+    apiKeyId: string
+  ): Promise<ApiResponse<ApiKeyVerification>> {
     return api.post(`/users/me/api-keys/${apiKeyId}/verify`, {});
   },
 };

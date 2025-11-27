@@ -340,4 +340,231 @@
       @include button-secondary;
     }
   }
+
+  // Bot type info in Step 1
+  .bot-type-info {
+    padding: $spacing-md;
+    background: alpha($color-status-info, 0.1);
+    border: $border-width-thin solid alpha($color-status-info, 0.3);
+    border-radius: $border-radius-md;
+    margin-bottom: $spacing-lg;
+
+    .info-label {
+      @include text-small;
+      color: $color-text-secondary;
+      margin: 0 0 $spacing-xs 0;
+    }
+
+    .bot-market-type {
+      display: inline-block;
+      padding: $spacing-xs $spacing-md;
+      background: alpha($color-accent, 0.2);
+      color: $color-accent;
+      border-radius: $border-radius-sm;
+      font-weight: $font-weight-bold;
+      @include text-body;
+      margin-bottom: $spacing-sm;
+    }
+
+    .info-hint {
+      @include text-small;
+      color: $color-text-secondary;
+      font-style: italic;
+      margin: $spacing-sm 0 0 0;
+    }
+  }
+
+  .api-key-mismatch-warning {
+    margin-top: $spacing-sm;
+    padding: $spacing-sm $spacing-md;
+    background: alpha($color-status-warning, 0.15);
+    border: $border-width-thin solid alpha($color-status-warning, 0.4);
+    border-radius: $border-radius-sm;
+    @include text-small;
+    color: $color-status-warning;
+    font-weight: $font-weight-medium;
+
+    strong {
+      font-weight: $font-weight-bold;
+    }
+  }
+
+  // New styles for risk management configuration
+  .config-explanation {
+    padding: $spacing-md;
+    background: alpha($color-primary, 0.2);
+    border-radius: $border-radius-md;
+    border-left: 4px solid $color-accent;
+
+    .info-text {
+      @include text-body;
+      color: $color-text-primary;
+      margin: 0;
+    }
+  }
+
+  .field-help {
+    @include text-small;
+    color: $color-text-secondary;
+    font-style: italic;
+    display: block;
+    margin-top: $spacing-xs;
+  }
+
+  .tooltip-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    margin-left: $spacing-xs;
+    background: alpha($color-accent, 0.2);
+    border-radius: 50%;
+    color: $color-accent;
+    font-size: $font-size-sm;
+    cursor: help;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: alpha($color-accent, 0.3);
+      transform: scale(1.1);
+    }
+  }
+
+  .config-summary {
+    padding: $spacing-lg;
+    background: alpha($color-status-info, 0.1);
+    border: $border-width-thin solid alpha($color-status-info, 0.3);
+    border-radius: $border-radius-md;
+
+    h4 {
+      @include heading-4;
+      margin: 0 0 $spacing-md 0;
+      color: $color-accent;
+    }
+
+    .summary-text {
+      @include text-body;
+      color: $color-text-primary;
+      margin: 0 0 $spacing-sm 0;
+    }
+
+    .summary-list {
+      margin: 0;
+      padding-left: $spacing-lg;
+
+      li {
+        @include text-body;
+        color: $color-text-secondary;
+        margin-bottom: $spacing-xs;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+  .processed-values {
+    padding: $spacing-lg;
+    background: alpha($color-status-success, 0.1);
+    border: $border-width-thin solid alpha($color-status-success, 0.3);
+    border-radius: $border-radius-md;
+
+    h4 {
+      @include heading-4;
+      margin: 0 0 $spacing-lg 0;
+      color: $color-status-success;
+    }
+
+    .processed-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: $spacing-md;
+    }
+
+    .processed-item {
+      @include flex-column($spacing-xs);
+      padding: $spacing-md;
+      background: $color-background-secondary;
+      border-radius: $border-radius-md;
+      border: $border-width-thin solid $color-border-primary;
+
+      .processed-label {
+        @include text-small;
+        color: $color-text-secondary;
+        font-weight: $font-weight-medium;
+      }
+
+      .processed-value {
+        @include text-body;
+        color: $color-accent;
+        font-weight: $font-weight-bold;
+        font-size: $font-size-lg;
+      }
+
+      .formula-text {
+        @include text-small;
+        color: $color-text-secondary;
+        font-style: italic;
+        margin-top: $spacing-xs;
+        padding: $spacing-xs;
+        background: alpha($color-primary, 0.2);
+        border-radius: $border-radius-sm;
+      }
+    }
+  }
+
+  .processed-error {
+    padding: $spacing-lg;
+    background: alpha($color-status-error, 0.1);
+    border: $border-width-thin solid alpha($color-status-error, 0.3);
+    border-radius: $border-radius-md;
+
+    h4 {
+      @include heading-4;
+      margin: 0 0 $spacing-md 0;
+      color: $color-status-error;
+    }
+
+    .error-message {
+      @include text-body;
+      color: $color-text-primary;
+      margin: 0 0 $spacing-sm 0;
+    }
+
+    .error-hint {
+      @include text-small;
+      color: $color-text-secondary;
+      margin: $spacing-sm 0 0 0;
+
+      p {
+        margin: $spacing-xs 0;
+
+        &:first-child {
+          margin-top: 0;
+        }
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+
+      .mismatch-warning {
+        margin-top: $spacing-md;
+        padding: $spacing-md;
+        background: alpha($color-status-warning, 0.2);
+        border: $border-width-thin solid alpha($color-status-warning, 0.4);
+        border-radius: $border-radius-sm;
+        color: $color-status-warning;
+        font-weight: $font-weight-medium;
+        font-style: normal;
+
+        strong {
+          color: $color-status-warning;
+          font-weight: $font-weight-bold;
+        }
+      }
+    }
+  }
 }

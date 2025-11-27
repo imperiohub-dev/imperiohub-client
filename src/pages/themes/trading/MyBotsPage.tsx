@@ -116,11 +116,17 @@ export function MyBotsPage() {
                   <>
                     <div className="info-item">
                       <span className="label">Portfolio:</span>
-                      <span className="value">${bot.traderBotConfiguration.portfolio}</span>
+                      <span className="value">{bot.traderBotConfiguration.portfolio}%</span>
+                      <span className="sublabel">del balance total</span>
                     </div>
                     <div className="info-item">
-                      <span className="label">Por Trade:</span>
+                      <span className="label">Riesgo/Trade:</span>
                       <span className="value">{bot.traderBotConfiguration.perTradePercent}%</span>
+                      <span className="sublabel">del portfolio</span>
+                    </div>
+                    <div className="info-item">
+                      <span className="label">Máx. por Trade:</span>
+                      <span className="value">{bot.traderBotConfiguration.maxAmountPerTrade} USDT</span>
                     </div>
                     <div className="info-item">
                       <span className="label">Leverage:</span>

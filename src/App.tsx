@@ -1,23 +1,23 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './store/AuthContext';
-import { NavigationProvider } from './contexts/NavigationContext';
-import { ViewportProvider } from './contexts/ViewportContext';
-import { ProtectedRoute } from './components/ProtectedRoute';
-import { LoginPage } from './pages/LoginPage';
-import { AppLayout, AppLayoutBody } from './components/layout/AppLayout';
-import { TopMenuBar } from './components/layout/TopMenuBar';
-import { LeftSidebar } from './components/layout/LeftSidebar';
-import { MainContent } from './components/layout/MainContent';
-import { BottomNavBar } from './components/layout/BottomNavBar';
-import { navigationConfig } from './config/navigation.config';
-import { AuthDebugger } from './components/AuthDebugger';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from "./store/AuthContext";
+import { NavigationProvider } from "./contexts/NavigationContext";
+import { ViewportProvider } from "./contexts/ViewportContext";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+import { LoginPage } from "./pages/LoginPage";
+import { AppLayout, AppLayoutBody } from "./components/layout/AppLayout";
+import { TopMenuBar } from "./components/layout/TopMenuBar";
+import { LeftSidebar } from "./components/layout/LeftSidebar";
+import { MainContent } from "./components/layout/MainContent";
+import { BottomNavBar } from "./components/layout/BottomNavBar";
+import { navigationConfig } from "./config/navigation.config";
+//import { AuthDebugger } from './components/AuthDebugger';
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         {/* Debug helper - solo en desarrollo */}
-        <AuthDebugger />
+        {/* <AuthDebugger /> */}
 
         <Routes>
           <Route path="/login" element={<LoginPage />} />
@@ -46,7 +46,7 @@ function App() {
             {navigationConfig.themes.map((theme) =>
               theme.subThemes.map((subTheme) => {
                 // Remove leading slash for nested routes
-                const relativePath = subTheme.path.startsWith('/')
+                const relativePath = subTheme.path.startsWith("/")
                   ? subTheme.path.substring(1)
                   : subTheme.path;
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import type {
   UserTraderBot,
@@ -6,6 +6,7 @@ import type {
   BotConfigurationFormData,
   TradingInstanceFormData,
   TradingInstance,
+  UserTraderBotConfiguration,
 } from "../../types/trading";
 import { tradingAPI } from "../../services/api";
 import "./index.scss";
@@ -22,6 +23,7 @@ export const BotConfigStepper = ({ bot, apiKeys, onClose, onSuccess }: BotConfig
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [instances, setInstances] = useState<TradingInstance[]>([]);
+  const [fullConfig, setFullConfig] = useState<UserTraderBotConfiguration | null>(null);
 
   // Step 1: Basic Config
   const step1Form = useForm({
@@ -71,6 +73,19 @@ export const BotConfigStepper = ({ bot, apiKeys, onClose, onSuccess }: BotConfig
     }
   };
 
+  const loadFullConfiguration = async () => {
+    if (!bot.traderBotConfiguration?.id) return;
+
+    try {
+      const response = await tradingAPI.getBotConfiguration(bot.id);
+      if (response.success && response.data) {
+        setFullConfig(response.data);
+      }
+    } catch (err: any) {
+      console.error("Error loading full configuration:", err);
+    }
+  };
+
   const handleStep2Submit = async (data: BotConfigurationFormData) => {
     setLoading(true);
     setError(null);
@@ -81,6 +96,9 @@ export const BotConfigStepper = ({ bot, apiKeys, onClose, onSuccess }: BotConfig
       } else {
         await tradingAPI.createBotConfiguration(bot.id, data);
       }
+
+      // Reload configuration with processed values
+      await loadFullConfiguration();
 
       // Load existing instances
       const response = await tradingAPI.getTradingInstances(bot.id);
@@ -129,6 +147,13 @@ export const BotConfigStepper = ({ bot, apiKeys, onClose, onSuccess }: BotConfig
     onClose();
   };
 
+  // Load full configuration when entering step 2
+  useEffect(() => {
+    if (currentStep === 2 && bot.traderBotConfiguration?.id) {
+      loadFullConfiguration();
+    }
+  }, [currentStep, bot.traderBotConfiguration?.id]);
+
   const intervals = ["1m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "12h", "1d"];
 
   return (
@@ -167,6 +192,14 @@ export const BotConfigStepper = ({ bot, apiKeys, onClose, onSuccess }: BotConfig
           <form onSubmit={step1Form.handleSubmit(handleStep1Submit)} className="step-form">
             <h3>Configuración Básica</h3>
 
+            {bot.traderBot && (
+              <div className="bot-type-info">
+                <p className="info-label">Tipo de Mercado del Bot:</p>
+                <span className="bot-market-type">{bot.traderBot.marketType}</span>
+                <p className="info-hint">Asegúrate de seleccionar una API Key del mismo tipo</p>
+              </div>
+            )}
+
             <div className="form-group">
               <label>Alias del Bot</label>
               <input
@@ -184,9 +217,19 @@ export const BotConfigStepper = ({ bot, apiKeys, onClose, onSuccess }: BotConfig
                 {apiKeys.map((key) => (
                   <option key={key.id} value={key.id}>
                     {key.broker} - {key.type} ({key.apiKey.slice(0, 8)}...)
+                    {bot.traderBot && key.type !== bot.traderBot.marketType && " ⚠️ Tipo no coincide"}
                   </option>
                 ))}
               </select>
+              {bot.traderBot && step1Form.watch("apiKeyId") && (() => {
+                const selectedKey = apiKeys.find(k => k.id === step1Form.watch("apiKeyId"));
+                return selectedKey && selectedKey.type !== bot.traderBot.marketType && (
+                  <div className="api-key-mismatch-warning">
+                    ⚠️ La API Key seleccionada es de tipo <strong>{selectedKey.type}</strong>,
+                    pero este bot requiere <strong>{bot.traderBot.marketType}</strong>
+                  </div>
+                );
+              })()}
             </div>
 
             <div className="form-group checkbox-group">
@@ -209,77 +252,117 @@ export const BotConfigStepper = ({ bot, apiKeys, onClose, onSuccess }: BotConfig
 
         {currentStep === 2 && (
           <form onSubmit={step2Form.handleSubmit(handleStep2Submit)} className="step-form">
-            <h3>Configuración de Trading</h3>
+            <h3>Configuración de Gestión de Riesgo</h3>
+
+            <div className="config-explanation">
+              <p className="info-text">
+                Configura cómo el bot gestionará tu capital. Estos valores son porcentajes y límites que se aplicarán sobre tu balance real de Binance.
+              </p>
+            </div>
 
             <div className="form-grid">
               <div className="form-group">
-                <label>Portfolio (Capital)</label>
+                <label>
+                  Portfolio (% del Balance)
+                  <span className="tooltip-icon" title="Porcentaje de tu balance total de Binance que quieres usar para trading">ⓘ</span>
+                </label>
                 <input
                   type="number"
                   step="0.01"
                   {...step2Form.register("portfolio", {
                     required: true,
-                    min: { value: 0, message: "Debe ser mayor a 0" },
+                    min: { value: 0.01, message: "Debe ser mayor a 0" },
+                    max: { value: 100, message: "Máximo 100%" },
                   })}
-                  placeholder="1000.00"
+                  placeholder="10"
                   disabled={loading}
                 />
+                <small className="field-help">
+                  Ejemplo: Si tienes 100,000 USDT y pones 10%, el bot operará con 10,000 USDT
+                </small>
               </div>
 
               <div className="form-group">
-                <label>% por Operación</label>
+                <label>
+                  Riesgo por Operación (%)
+                  <span className="tooltip-icon" title="Porcentaje del portfolio que arriesgarás en cada trade">ⓘ</span>
+                </label>
                 <input
                   type="number"
                   step="0.01"
                   {...step2Form.register("perTradePercent", {
                     required: true,
-                    min: 0,
+                    min: { value: 0.01, message: "Debe ser mayor a 0" },
                     max: { value: 100, message: "Máximo 100%" },
                   })}
-                  placeholder="2.00"
+                  placeholder="1"
                   disabled={loading}
                 />
+                <small className="field-help">
+                  Ejemplo: Con portfolio de 10,000 USDT y 1%, arriesgarás 100 USDT por trade
+                </small>
               </div>
 
               <div className="form-group">
-                <label>Monto Máximo por Trade</label>
+                <label>
+                  Monto Máximo por Trade (USDT)
+                  <span className="tooltip-icon" title="Límite absoluto en USDT que el bot puede invertir en una sola operación">ⓘ</span>
+                </label>
                 <input
                   type="number"
                   step="0.01"
-                  {...step2Form.register("maxAmountPerTrade", { required: true, min: 0 })}
-                  placeholder="100.00"
+                  {...step2Form.register("maxAmountPerTrade", { required: true, min: { value: 1, message: "Debe ser mayor a 0" } })}
+                  placeholder="500"
                   disabled={loading}
                 />
+                <small className="field-help">
+                  Protección: El bot nunca invertirá más de este monto por operación, sin importar el cálculo de riesgo
+                </small>
               </div>
 
               <div className="form-group">
-                <label>Drawdown Máximo (%)</label>
+                <label>
+                  Drawdown Máximo (%)
+                  <span className="tooltip-icon" title="Pérdida máxima tolerada antes de que el bot se detenga automáticamente">ⓘ</span>
+                </label>
                 <input
                   type="number"
                   step="0.01"
                   {...step2Form.register("maxDrawdownPercent", {
                     required: true,
-                    min: 0,
+                    min: { value: 0.01, message: "Debe ser mayor a 0" },
                     max: { value: 100, message: "Máximo 100%" },
                   })}
-                  placeholder="10.00"
+                  placeholder="10"
                   disabled={loading}
                 />
+                <small className="field-help">
+                  Ejemplo: Con 100,000 USDT y 10%, el bot se detendrá si pierdes 10,000 USDT
+                </small>
               </div>
 
               <div className="form-group">
-                <label>Profit Target Ratio</label>
+                <label>
+                  Ratio Ganancia/Riesgo
+                  <span className="tooltip-icon" title="Cuánto quieres ganar por cada unidad que arriesgas">ⓘ</span>
+                </label>
                 <input
                   type="number"
                   step="0.1"
-                  {...step2Form.register("profitTargetRatio", { required: true, min: 0 })}
-                  placeholder="2.5"
+                  {...step2Form.register("profitTargetRatio", { required: true, min: { value: 0.1, message: "Debe ser mayor a 0" } })}
+                  placeholder="2"
                   disabled={loading}
                 />
+                <small className="field-help">
+                  Ejemplo: Con ratio 2, si arriesgas 100 USDT, buscarás ganar 200 USDT
+                </small>
               </div>
 
               <div className="form-group">
-                <label>Apalancamiento Máximo</label>
+                <label>
+                  Apalancamiento Máximo
+                  <span className="tooltip-icon" title="Multiplicador máximo del capital (solo para futuros)">ⓘ</span>
+                </label>
                 <input
                   type="number"
                   step="1"
@@ -288,11 +371,101 @@ export const BotConfigStepper = ({ bot, apiKeys, onClose, onSuccess }: BotConfig
                     min: { value: 1, message: "Mínimo 1x" },
                     max: { value: 125, message: "Máximo 125x" },
                   })}
-                  placeholder="10"
+                  placeholder="5"
                   disabled={loading}
                 />
+                <small className="field-help">
+                  Recomendado: 5x-10x para principiantes. Mayor apalancamiento = mayor riesgo
+                </small>
               </div>
             </div>
+
+            <div className="config-summary">
+              <h4>Resumen de Configuración</h4>
+              <p className="summary-text">
+                Los valores se calcularán automáticamente cuando conectes tu API de Binance.
+                El bot consultará tu balance real y aplicará estos porcentajes para determinar:
+              </p>
+              <ul className="summary-list">
+                <li>Capital asignado al bot (Portfolio)</li>
+                <li>Riesgo efectivo por operación</li>
+                <li>Límite de pérdidas totales (Drawdown)</li>
+              </ul>
+            </div>
+
+            {fullConfig?.processed && (
+              <div className="processed-values">
+                <h4>Valores Calculados (Con tu Balance Real)</h4>
+                <div className="processed-grid">
+                  <div className="processed-item">
+                    <span className="processed-label">Balance USDT:</span>
+                    <span className="processed-value">
+                      {fullConfig.processed.usdtBalance.toFixed(2)} USDT
+                    </span>
+                  </div>
+                  <div className="processed-item">
+                    <span className="processed-label">Capital del Bot:</span>
+                    <span className="processed-value">
+                      {fullConfig.processed.portfolio.toFixed(2)} USDT
+                    </span>
+                    {fullConfig.formulas?.portfolioCalculation && (
+                      <small className="formula-text">{fullConfig.formulas.portfolioCalculation}</small>
+                    )}
+                  </div>
+                  <div className="processed-item">
+                    <span className="processed-label">Riesgo por Trade:</span>
+                    <span className="processed-value">
+                      {fullConfig.processed.riskPerTrade.toFixed(2)} USDT
+                    </span>
+                    {fullConfig.formulas?.riskPerTradeCalculation && (
+                      <small className="formula-text">{fullConfig.formulas.riskPerTradeCalculation}</small>
+                    )}
+                  </div>
+                  <div className="processed-item">
+                    <span className="processed-label">Riesgo Efectivo:</span>
+                    <span className="processed-value">
+                      {fullConfig.processed.effectiveRiskPerTrade.toFixed(2)} USDT
+                    </span>
+                    <small className="formula-text">
+                      Limitado por máximo {fullConfig.processed.maxAmountPerTrade.toFixed(2)} USDT
+                    </small>
+                  </div>
+                  <div className="processed-item">
+                    <span className="processed-label">Drawdown Máximo:</span>
+                    <span className="processed-value">
+                      {fullConfig.processed.maxDrawdownPercent.toFixed(2)} USDT
+                    </span>
+                    {fullConfig.formulas?.maxDrawdownCalculation && (
+                      <small className="formula-text">{fullConfig.formulas.maxDrawdownCalculation}</small>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {fullConfig?.processedError && (
+              <div className="processed-error">
+                <h4>⚠️ Error en Configuración</h4>
+                <p className="error-message">{fullConfig.processedError.message}</p>
+                {fullConfig.processedError.code === "API_KEY_NOT_CONFIGURED" && (
+                  <p className="error-hint">
+                    Por favor, configura una API Key de Binance en el Paso 1 para ver los valores calculados.
+                  </p>
+                )}
+                {fullConfig.processedError.message.includes("No se encontraron credenciales") && bot.traderBot && (
+                  <div className="error-hint">
+                    <p><strong>Este bot requiere una API Key de tipo: {bot.traderBot.marketType}</strong></p>
+                    <p>Ve al Paso 1 y asegúrate de seleccionar una API Key que coincida con el tipo de mercado del bot.</p>
+                    {bot.apiKey && bot.apiKey.type !== bot.traderBot.marketType && (
+                      <p className="mismatch-warning">
+                        ⚠️ Actualmente tienes seleccionada una API Key de tipo <strong>{bot.apiKey.type}</strong>,
+                        pero este bot necesita una de tipo <strong>{bot.traderBot.marketType}</strong>
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
 
             <div className="form-actions">
               <button

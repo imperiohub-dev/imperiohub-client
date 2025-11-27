@@ -8,6 +8,84 @@
   flex-direction: column;
   overflow-y: auto;
   @include custom-scrollbar;
+
+  // Mobile: Off-canvas drawer
+  @media (max-width: 767px) {
+    position: fixed;
+    top: 0;
+    left: -280px; // Hidden off-screen by default
+    height: 100vh;
+    z-index: $z-index-modal; // Above everything except modals
+    transition: left 0.3s ease-out;
+    box-shadow: none;
+
+    &.open {
+      left: 0; // Slide in when open
+      box-shadow: $shadow-xl;
+    }
+  }
+
+  // Desktop: Reduce width at md breakpoint
+  @include respond-to(md) {
+    width: 240px;
+  }
+}
+
+// Overlay backdrop - Mobile only
+.left-sidebar__overlay {
+  display: none;
+
+  @media (max-width: 767px) {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: calc($z-index-modal - 1); // Behind the drawer but above content
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-out;
+
+    &.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+}
+
+// Close button - Mobile only
+.left-sidebar__close {
+  display: none;
+
+  @media (max-width: 767px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: $spacing-md;
+    right: $spacing-md;
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border: none;
+    border-radius: $border-radius-sm;
+    cursor: pointer;
+    transition: all $transition-fast;
+    color: $color-text-primary;
+    font-size: 24px;
+    z-index: 1;
+
+    &:active {
+      background: alpha($color-text-primary, 0.1);
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-accent;
+      outline-offset: 2px;
+    }
+  }
 }
 
 .left-sidebar__header {
@@ -94,9 +172,3 @@
   padding: 2px 8px;
 }
 
-// Responsive
-@include respond-to(md) {
-  .left-sidebar {
-    width: 240px;
-  }
-}

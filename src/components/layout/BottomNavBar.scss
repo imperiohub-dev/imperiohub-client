@@ -1,0 +1,89 @@
+@use '../../styles/abstracts' as *;
+
+.bottom-nav-bar {
+  display: none; // Hidden on desktop by default
+
+  // Mobile only: Show fixed bottom navigation
+  @media (max-width: 767px) {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: $color-background-secondary;
+    border-top: $border-width-thin solid $color-border-primary;
+    z-index: $z-index-sticky;
+    padding: $spacing-xs;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: $shadow-lg;
+
+    // Prevent content from being hidden behind the nav bar
+    // (safe area for iPhone notch)
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+.bottom-nav-bar__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  flex: 1;
+  max-width: 80px;
+  min-height: 48px; // Touch target size
+  background: transparent;
+  border: none;
+  border-radius: $border-radius-sm;
+  cursor: pointer;
+  transition: all $transition-fast;
+  padding: $spacing-xs;
+  color: $color-text-secondary;
+
+  // Active touch state (mobile)
+  &:active {
+    background: alpha($color-text-primary, 0.05);
+    transform: scale(0.95);
+  }
+
+  // Active theme state
+  &.active {
+    color: $color-accent;
+    background: alpha($color-accent, 0.1);
+
+    .bottom-nav-bar__icon {
+      transform: scale(1.1);
+    }
+
+    .bottom-nav-bar__label {
+      font-weight: $font-weight-semibold;
+    }
+  }
+
+  // Focus state for accessibility
+  &:focus-visible {
+    outline: 2px solid $color-accent;
+    outline-offset: 2px;
+  }
+}
+
+.bottom-nav-bar__icon {
+  font-size: 22px;
+  line-height: 1;
+  transition: transform $transition-fast;
+  flex-shrink: 0;
+}
+
+.bottom-nav-bar__label {
+  font-size: 11px;
+  font-weight: $font-weight-medium;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  line-height: 1.2;
+  transition: font-weight $transition-fast;
+}

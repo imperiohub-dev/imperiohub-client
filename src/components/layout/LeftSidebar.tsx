@@ -1,12 +1,16 @@
 /**
  * LeftSidebar - Left navigation panel showing subthemes
+ * On mobile: Becomes an off-canvas drawer
+ * On desktop: Fixed sidebar
  */
 
 import { useNavigation } from '../../contexts/NavigationContext';
+import { useViewportContext } from '../../contexts/ViewportContext';
 import './LeftSidebar.scss';
 
 export const LeftSidebar = () => {
   const { state, setSubTheme } = useNavigation();
+  const { isMobile, isSidebarOpen, closeSidebar } = useViewportContext();
 
   if (!state.currentTheme) {
     return null;
@@ -14,15 +18,47 @@ export const LeftSidebar = () => {
 
   const handleSubThemeClick = (subThemeId: string) => {
     setSubTheme(subThemeId);
+
+    // Close drawer on mobile after selecting a subtheme
+    if (isMobile) {
+      closeSidebar();
+    }
+  };
+
+  const handleOverlayClick = () => {
+    if (isMobile) {
+      closeSidebar();
+    }
   };
 
   return (
-    <aside className="left-sidebar">
-      <div className="left-sidebar__header">
-        <h3>{state.currentTheme.label}</h3>
-      </div>
+    <>
+      {/* Overlay backdrop - Mobile only */}
+      {isMobile && isSidebarOpen && (
+        <div
+          className="left-sidebar__overlay visible"
+          onClick={handleOverlayClick}
+          aria-hidden="true"
+        />
+      )}
 
-      <nav className="left-sidebar__nav">
+      <aside className={`left-sidebar ${isMobile && isSidebarOpen ? 'open' : ''}`}>
+        {/* Close button - Mobile only */}
+        {isMobile && (
+          <button
+            className="left-sidebar__close"
+            onClick={closeSidebar}
+            aria-label="Close navigation menu"
+          >
+            ✕
+          </button>
+        )}
+
+        <div className="left-sidebar__header">
+          <h3>{state.currentTheme.label}</h3>
+        </div>
+
+        <nav className="left-sidebar__nav">
         {state.currentTheme.subThemes.map((subTheme) => {
           const isActive = state.currentSubTheme?.id === subTheme.id;
 
@@ -42,7 +78,8 @@ export const LeftSidebar = () => {
             </button>
           );
         })}
-      </nav>
-    </aside>
+        </nav>
+      </aside>
+    </>
   );
 };

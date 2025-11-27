@@ -4,10 +4,12 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useNavigation } from '../../contexts/NavigationContext';
+import { useViewportContext } from '../../contexts/ViewportContext';
 import './TopMenuBar.scss';
 
 export const TopMenuBar = () => {
   const { config, state, setTheme } = useNavigation();
+  const { isMobile, toggleSidebar, isSidebarOpen } = useViewportContext();
   const [openThemeId, setOpenThemeId] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -43,6 +45,18 @@ export const TopMenuBar = () => {
   return (
     <div className="top-menu-bar" ref={dropdownRef}>
       <div className="top-menu-bar__container">
+        {/* Hamburger menu - Mobile only */}
+        {isMobile && (
+          <button
+            className="top-menu-bar__hamburger"
+            onClick={toggleSidebar}
+            aria-label="Toggle navigation menu"
+            aria-expanded={isSidebarOpen}
+          >
+            <span>☰</span>
+          </button>
+        )}
+
         <div className="top-menu-bar__brand">
           <h1>ImperioHub</h1>
         </div>

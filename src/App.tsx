@@ -1,12 +1,14 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './store/AuthContext';
 import { NavigationProvider } from './contexts/NavigationContext';
+import { ViewportProvider } from './contexts/ViewportContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { LoginPage } from './pages/LoginPage';
 import { AppLayout, AppLayoutBody } from './components/layout/AppLayout';
 import { TopMenuBar } from './components/layout/TopMenuBar';
 import { LeftSidebar } from './components/layout/LeftSidebar';
 import { MainContent } from './components/layout/MainContent';
+import { BottomNavBar } from './components/layout/BottomNavBar';
 import { navigationConfig } from './config/navigation.config';
 import { AuthDebugger } from './components/AuthDebugger';
 
@@ -26,13 +28,16 @@ function App() {
             element={
               <ProtectedRoute>
                 <NavigationProvider config={navigationConfig}>
-                  <AppLayout>
-                    <TopMenuBar />
-                    <AppLayoutBody>
-                      <LeftSidebar />
-                      <MainContent />
-                    </AppLayoutBody>
-                  </AppLayout>
+                  <ViewportProvider>
+                    <AppLayout>
+                      <TopMenuBar />
+                      <AppLayoutBody>
+                        <LeftSidebar />
+                        <MainContent />
+                      </AppLayoutBody>
+                      <BottomNavBar />
+                    </AppLayout>
+                  </ViewportProvider>
                 </NavigationProvider>
               </ProtectedRoute>
             }

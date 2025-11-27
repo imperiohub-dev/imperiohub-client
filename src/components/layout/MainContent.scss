@@ -7,6 +7,12 @@
   overflow-y: auto;
   background: $color-background-primary;
   @include custom-scrollbar;
+
+  // Mobile: Add padding for BottomNavBar
+  @media (max-width: 767px) {
+    width: 100%; // Full width on mobile
+    padding-bottom: 64px; // Space for fixed BottomNavBar
+  }
 }
 
 .main-content__breadcrumbs {
@@ -17,6 +23,11 @@
   background: $color-background-secondary;
   border-bottom: $border-width-thin solid $color-border-secondary;
   font-size: $font-size-sm;
+
+  // Hide breadcrumbs on mobile to save space
+  @media (max-width: 767px) {
+    display: none;
+  }
 
   .breadcrumb {
     color: $color-text-secondary;
@@ -37,6 +48,12 @@
 .main-content__body {
   flex: 1;
   padding: $spacing-lg;
+  overflow-y: auto;
+
+  // Reduce padding on mobile
+  @media (max-width: 767px) {
+    padding: $spacing-md;
+  }
 }
 
 .main-content__loading {

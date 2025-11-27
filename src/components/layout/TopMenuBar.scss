@@ -7,6 +7,11 @@
   background: $color-background-secondary;
   border-bottom: $border-width-thin solid $color-border-primary;
   height: 60px;
+
+  // Reduce height on mobile to maximize content space
+  @media (max-width: 767px) {
+    height: 56px;
+  }
 }
 
 .top-menu-bar__container {
@@ -16,12 +21,51 @@
   padding: 0 $spacing-lg;
 }
 
+// Hamburger menu button - Mobile only
+.top-menu-bar__hamburger {
+  display: none; // Hidden on desktop
+
+  @media (max-width: 767px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: none;
+    border-radius: $border-radius-md;
+    cursor: pointer;
+    transition: all $transition-fast;
+    color: $color-text-primary;
+    font-size: 24px;
+    flex-shrink: 0;
+
+    &:active {
+      background: alpha($color-text-primary, 0.1);
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-accent;
+      outline-offset: 2px;
+    }
+
+    span {
+      line-height: 1;
+    }
+  }
+}
+
 .top-menu-bar__brand {
   h1 {
     font-size: $font-size-lg;
     font-weight: $font-weight-bold;
     color: $color-accent;
     margin: 0;
+
+    // Reduce size on mobile
+    @media (max-width: 767px) {
+      font-size: $font-size-md;
+    }
   }
 }
 
@@ -29,6 +73,11 @@
   display: flex;
   align-items: center;
   gap: $spacing-xs;
+
+  // Hide theme navigation on mobile (replaced by BottomNavBar)
+  @media (max-width: 767px) {
+    display: none;
+  }
 }
 
 .top-menu-bar__item {

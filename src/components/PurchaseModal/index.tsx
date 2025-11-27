@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { TradingBot, ApiKey } from "../../types/trading";
-import "./index.module.scss";
+import "./index.scss";
 
 interface PurchaseModalProps {
   bot: TradingBot;

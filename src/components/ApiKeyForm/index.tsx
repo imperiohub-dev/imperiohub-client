@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import type { ApiKeyFormData, Broker, ApiKeyType } from "../../types/trading";
-import "./index.module.scss";
+import "./index.scss";
 
 interface ApiKeyFormProps {
   onSubmit: (data: ApiKeyFormData) => void;

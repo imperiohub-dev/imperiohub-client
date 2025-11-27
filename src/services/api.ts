@@ -15,21 +15,23 @@ import type {
   UserBotFormData,
 } from "../types/trading";
 
-// Configuración de la API - Backend URL base (sin /api)
+// Configuración de la API - Backend URL base
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
-// En desarrollo con proxy, usar ruta relativa
-// En producción o desarrollo local, usar URL completa
+// En desarrollo con proxy (cuando API_URL es https), usar ruta relativa
+// En producción o desarrollo local sin proxy, usar URL completa
 const getBaseURL = () => {
   const isProduction = import.meta.env.PROD;
   const isDevelopmentWithProxy = !isProduction && API_URL.startsWith("https");
 
-  // Si estamos en desarrollo y el API_URL es HTTPS, usar proxy relativo
+  // En desarrollo con proxy (API_URL es https):
+  // usar ruta relativa, el proxy redirige /api -> https://api.imperiohub.com/api
   if (isDevelopmentWithProxy) {
     return "/api/v1";
   }
 
-  // Agregar /api/v1 según la estructura del backend
+  // En producción o desarrollo local (http://localhost):
+  // usar URL completa del backend
   return `${API_URL}/api/v1`;
 };
 
@@ -144,8 +146,16 @@ export const authAPI = {
    * Obtiene la URL para iniciar el flujo de OAuth con Discord
    */
   getLoginUrl(): string {
-    const baseURL = getBaseURL();
-    return `${baseURL}/auth/discord`;
+    const isProduction = import.meta.env.PROD;
+    const isDevelopmentWithProxy = !isProduction && API_URL.startsWith("https");
+
+    // En desarrollo con proxy, usa ruta relativa
+    if (isDevelopmentWithProxy) {
+      return "/api/v1/auth/discord";
+    }
+
+    // En producción o desarrollo local, usa URL completa
+    return `${API_URL}/api/v1/auth/discord`;
   },
 
   /**

@@ -8,7 +8,7 @@ import type {
   TradingInstance,
 } from "../../types/trading";
 import { tradingAPI } from "../../services/api";
-import "./index.module.scss";
+import "./index.scss";
 
 interface BotConfigStepperProps {
   bot: UserTraderBot;

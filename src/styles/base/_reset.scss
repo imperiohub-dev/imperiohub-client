@@ -57,6 +57,26 @@ button,
 textarea,
 select {
   font: inherit;
+}
+
+// Input elements should not inherit color to avoid invisible text
+input,
+textarea,
+select {
+  color: $color-text-primary;
+
+  &::placeholder {
+    color: $color-text-secondary;
+  }
+}
+
+// Select options styling
+select option {
+  background: $color-background-secondary;
+  color: $color-text-primary;
+}
+
+button {
   color: inherit;
 }
 

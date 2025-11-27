@@ -41,7 +41,9 @@ export function ApiKeysPage() {
       refetch();
       setTimeout(() => setSuccessMessage(null), 3000);
     } catch (err: any) {
-      setErrorMessage(err.response?.data?.message || "Error al eliminar API Key");
+      setErrorMessage(
+        err.response?.data?.message || "Error al eliminar API Key"
+      );
     }
   };
 
@@ -64,7 +66,9 @@ export function ApiKeysPage() {
         }
       }
     } catch (err: any) {
-      setErrorMessage(err.response?.data?.message || "Error al verificar API Key");
+      setErrorMessage(
+        err.response?.data?.message || "Error al verificar API Key"
+      );
     } finally {
       setVerifying(null);
     }
@@ -91,7 +95,9 @@ export function ApiKeysPage() {
       <div className="page-header">
         <div>
           <h1>API Keys</h1>
-          <p className="subtitle">Gestiona las claves de API de tus exchanges</p>
+          <p className="subtitle">
+            Gestiona las claves de API de tus exchanges
+          </p>
         </div>
         {!showForm && (
           <button className="btn btn-primary" onClick={() => setShowForm(true)}>
@@ -107,7 +113,9 @@ export function ApiKeysPage() {
       {errorMessage && (
         <div className="alert alert-error">
           {errorMessage}
-          <button className="close-btn" onClick={() => setErrorMessage(null)}>✕</button>
+          <button className="close-btn" onClick={() => setErrorMessage(null)}>
+            ✕
+          </button>
         </div>
       )}
 
@@ -125,7 +133,9 @@ export function ApiKeysPage() {
       {error && (
         <div className="alert alert-error">
           {error}
-          <button className="retry-btn" onClick={refetch}>Reintentar</button>
+          <button className="retry-btn" onClick={refetch}>
+            Reintentar
+          </button>
         </div>
       )}
 
@@ -140,7 +150,10 @@ export function ApiKeysPage() {
           <h3>No tienes API Keys configuradas</h3>
           <p>Agrega una API Key para comenzar a usar los bots de trading</p>
           {!showForm && (
-            <button className="btn btn-primary" onClick={() => setShowForm(true)}>
+            <button
+              className="btn btn-primary"
+              onClick={() => setShowForm(true)}
+            >
               Agregar Primera API Key
             </button>
           )}
@@ -158,7 +171,9 @@ export function ApiKeysPage() {
                   <code>{maskApiKey(key.apiKey)}</code>
                 </div>
                 <div className="key-meta">
-                  <span>Creada: {new Date(key.createdAt).toLocaleDateString()}</span>
+                  <span>
+                    Creada: {new Date(key.createdAt).toLocaleDateString()}
+                  </span>
                 </div>
               </div>
               <div className="key-actions">

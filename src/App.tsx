@@ -10,15 +10,11 @@ import { LeftSidebar } from "./components/layout/LeftSidebar";
 import { MainContent } from "./components/layout/MainContent";
 import { BottomNavBar } from "./components/layout/BottomNavBar";
 import { navigationConfig } from "./config/navigation.config";
-//import { AuthDebugger } from './components/AuthDebugger';
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        {/* Debug helper - solo en desarrollo */}
-        {/* <AuthDebugger /> */}
-
         <Routes>
           <Route path="/login" element={<LoginPage />} />
 
@@ -43,13 +39,16 @@ function App() {
             }
           >
             {/* Dynamic routes generated from navigationConfig */}
-            {navigationConfig.themes.map((theme) =>
-              theme.subThemes.map((subTheme) => {
+            {navigationConfig.themes.map((theme) => {
+              //console.log("theme", theme);
+              return theme.subThemes.map((subTheme) => {
+                // console.log("subTheme", subTheme);
+
                 // Remove leading slash for nested routes
                 const relativePath = subTheme.path.startsWith("/")
                   ? subTheme.path.substring(1)
                   : subTheme.path;
-
+                // console.log("relativePath", relativePath);
                 return (
                   <Route
                     key={subTheme.path}
@@ -57,11 +56,14 @@ function App() {
                     element={<subTheme.component />}
                   />
                 );
-              })
-            )}
+              });
+            })}
 
-            {/* Default redirect to sales dashboard */}
-            <Route index element={<Navigate to="/sales/dashboard" replace />} />
+            {/* Default redirect to trading marketplace */}
+            <Route
+              index
+              element={<Navigate to="/trading/marketplace" replace />}
+            />
           </Route>
         </Routes>
       </AuthProvider>

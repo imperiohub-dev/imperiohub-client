@@ -1,5 +1,5 @@
 /**
- * ClientsView - Manage clients
+ * ClientsView - Manage clients with responsive table
  */
 
 export const ClientsView = () => {
@@ -17,31 +17,35 @@ export const ClientsView = () => {
       </div>
 
       <div className="card">
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-              <th style={{ padding: '1rem', textAlign: 'left' }}>Nombre</th>
-              <th style={{ padding: '1rem', textAlign: 'left' }}>Email</th>
-              <th style={{ padding: '1rem', textAlign: 'left' }}>Órdenes</th>
-              <th style={{ padding: '1rem', textAlign: 'right' }}>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {mockClients.map((client) => (
-              <tr key={client.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                <td style={{ padding: '1rem' }}>{client.name}</td>
-                <td style={{ padding: '1rem' }}>{client.email}</td>
-                <td style={{ padding: '1rem' }}>
-                  <span className="badge badge-info">{client.orders}</span>
-                </td>
-                <td style={{ padding: '1rem', textAlign: 'right' }}>
-                  <button className="btn btn-sm btn-ghost">Ver</button>
-                  <button className="btn btn-sm btn-ghost ml-sm">Editar</button>
-                </td>
+        <div className="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Órdenes</th>
+                <th>Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {mockClients.map((client) => (
+                <tr key={client.id}>
+                  <td data-label="Nombre">{client.name}</td>
+                  <td data-label="Email">{client.email}</td>
+                  <td data-label="Órdenes">
+                    <span className="table-status status-info">{client.orders}</span>
+                  </td>
+                  <td data-label="Acciones">
+                    <div className="table-actions">
+                      <button className="btn btn-sm btn-ghost">Ver</button>
+                      <button className="btn btn-sm btn-ghost">Editar</button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

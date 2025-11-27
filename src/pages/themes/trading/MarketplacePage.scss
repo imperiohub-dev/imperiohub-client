@@ -5,6 +5,11 @@
   @include flex-column($spacing-xl);
   padding: $spacing-xl 0;
 
+  // Reduce padding on mobile
+  @media (max-width: $breakpoint-mobile-max) {
+    padding: $spacing-lg 0;
+  }
+
   .page-header {
     @include flex-column($spacing-sm);
 
@@ -12,12 +17,21 @@
       @include heading-1;
       margin: 0;
       color: $color-accent;
+
+      // Reduce heading size on mobile
+      @media (max-width: $breakpoint-mobile-max) {
+        font-size: $font-size-xl; // Smaller on mobile
+      }
     }
 
     .subtitle {
       @include text-body;
       color: $color-text-secondary;
       margin: 0;
+
+      @media (max-width: $breakpoint-mobile-max) {
+        font-size: $font-size-sm;
+      }
     }
   }
 
@@ -95,8 +109,23 @@
 
   .bots-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: $spacing-lg;
+    grid-template-columns: 1fr; // Single column on mobile
+
+    // Tablet: 2 columns
+    @include respond-to(sm) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    // Desktop: auto-fill with safe min-width
+    @include respond-to(md) {
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    }
+
+    // Reduce gap on mobile
+    @media (max-width: $breakpoint-mobile-max) {
+      gap: $spacing-md;
+    }
   }
 
   .error-modal {

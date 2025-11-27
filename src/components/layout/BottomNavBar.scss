@@ -4,7 +4,7 @@
   display: none; // Hidden on desktop by default
 
   // Mobile only: Show fixed bottom navigation
-  @media (max-width: 767px) {
+  @media (max-width: $breakpoint-mobile-max) {
     display: flex;
     position: fixed;
     bottom: 0;

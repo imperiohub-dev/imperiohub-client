@@ -1,5 +1,5 @@
 /**
- * ProductsView - Manage products
+ * ProductsView - Manage products with responsive table
  */
 
 export const ProductsView = () => {
@@ -9,6 +9,12 @@ export const ProductsView = () => {
     { id: 3, name: 'Producto C', sku: 'SKU-003', stock: 78, price: 19.99 },
   ];
 
+  const getStockStatus = (stock: number) => {
+    if (stock < 20) return 'status-warning';
+    if (stock < 50) return 'status-success';
+    return 'status-success';
+  };
+
   return (
     <div className="theme-page">
       <div className="flex-between mb-lg">
@@ -17,35 +23,39 @@ export const ProductsView = () => {
       </div>
 
       <div className="card">
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-              <th style={{ padding: '1rem', textAlign: 'left' }}>Producto</th>
-              <th style={{ padding: '1rem', textAlign: 'left' }}>SKU</th>
-              <th style={{ padding: '1rem', textAlign: 'left' }}>Stock</th>
-              <th style={{ padding: '1rem', textAlign: 'left' }}>Precio</th>
-              <th style={{ padding: '1rem', textAlign: 'right' }}>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {mockProducts.map((product) => (
-              <tr key={product.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                <td style={{ padding: '1rem' }}>{product.name}</td>
-                <td style={{ padding: '1rem' }}>{product.sku}</td>
-                <td style={{ padding: '1rem' }}>
-                  <span className={`badge ${product.stock < 20 ? 'badge-warning' : 'badge-success'}`}>
-                    {product.stock}
-                  </span>
-                </td>
-                <td style={{ padding: '1rem' }}>${product.price.toFixed(2)}</td>
-                <td style={{ padding: '1rem', textAlign: 'right' }}>
-                  <button className="btn btn-sm btn-ghost">Ver</button>
-                  <button className="btn btn-sm btn-ghost ml-sm">Editar</button>
-                </td>
+        <div className="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>SKU</th>
+                <th>Stock</th>
+                <th>Precio</th>
+                <th>Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {mockProducts.map((product) => (
+                <tr key={product.id}>
+                  <td data-label="Producto">{product.name}</td>
+                  <td data-label="SKU">{product.sku}</td>
+                  <td data-label="Stock">
+                    <span className={`table-status ${getStockStatus(product.stock)}`}>
+                      {product.stock}
+                    </span>
+                  </td>
+                  <td data-label="Precio">${product.price.toFixed(2)}</td>
+                  <td data-label="Acciones">
+                    <div className="table-actions">
+                      <button className="btn btn-sm btn-ghost">Ver</button>
+                      <button className="btn btn-sm btn-ghost">Editar</button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

@@ -5,21 +5,42 @@
   @include flex-column($spacing-xl);
   padding: $spacing-xl 0;
 
+  // Reduce padding on mobile
+  @media (max-width: $breakpoint-mobile-max) {
+    padding: $spacing-lg 0;
+  }
+
   .page-header {
     @include flex-between;
     align-items: flex-start;
     gap: $spacing-lg;
 
+    // Stack vertically on mobile
+    @media (max-width: $breakpoint-mobile-max) {
+      flex-direction: column;
+      align-items: stretch;
+      gap: $spacing-md;
+    }
+
     h1 {
       @include heading-1;
       margin: 0;
       color: $color-accent;
+
+      // Reduce heading size on mobile
+      @media (max-width: $breakpoint-mobile-max) {
+        font-size: $font-size-xl;
+      }
     }
 
     .subtitle {
       @include text-body;
       color: $color-text-secondary;
       margin: $spacing-xs 0 0 0;
+
+      @media (max-width: $breakpoint-mobile-max) {
+        font-size: $font-size-sm;
+      }
     }
   }
 
@@ -104,8 +125,23 @@
 
   .bots-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
     gap: $spacing-lg;
+    grid-template-columns: 1fr; // Single column on mobile
+
+    // Tablet: 2 columns
+    @include respond-to(sm) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    // Desktop: auto-fill with safe min-width
+    @include respond-to(md) {
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+
+    // Reduce gap on mobile
+    @media (max-width: $breakpoint-mobile-max) {
+      gap: $spacing-md;
+    }
   }
 
   .bot-card {
@@ -184,6 +220,12 @@
       grid-template-columns: repeat(2, 1fr);
       gap: $spacing-md;
 
+      // Single column on very small screens
+      @media (max-width: $breakpoint-xs) {
+        grid-template-columns: 1fr;
+        gap: $spacing-sm;
+      }
+
       .info-item {
         @include flex-column($spacing-xs);
 
@@ -206,10 +248,20 @@
       padding-top: $spacing-md;
       border-top: $border-width-thin solid $color-border-primary;
 
+      // Stack vertically on very small screens
+      @media (max-width: $breakpoint-xs) {
+        flex-direction: column;
+      }
+
       .btn {
         flex: 1;
         padding: $spacing-sm $spacing-md;
         font-size: $font-size-sm;
+
+        // Full width when stacked
+        @media (max-width: $breakpoint-xs) {
+          width: 100%;
+        }
       }
 
       .btn-primary {

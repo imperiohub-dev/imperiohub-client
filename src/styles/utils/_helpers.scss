@@ -138,3 +138,94 @@
 // Pointer events utilities
 .pointer-events-none { pointer-events: none; }
 .pointer-events-auto { pointer-events: auto; }
+
+// ============================================
+// Responsive Utilities
+// ============================================
+
+// Hide/Show utilities based on viewport
+.hide-mobile {
+  @media (max-width: $breakpoint-mobile-max) {
+    display: none !important;
+  }
+}
+
+.hide-tablet {
+  @media (min-width: $breakpoint-sm) and (max-width: $breakpoint-tablet-max) {
+    display: none !important;
+  }
+}
+
+.hide-desktop {
+  @media (min-width: $breakpoint-md) {
+    display: none !important;
+  }
+}
+
+.show-mobile {
+  display: none !important;
+
+  @media (max-width: $breakpoint-mobile-max) {
+    display: block !important;
+  }
+}
+
+.show-tablet {
+  display: none !important;
+
+  @media (min-width: $breakpoint-sm) and (max-width: $breakpoint-tablet-max) {
+    display: block !important;
+  }
+}
+
+.show-desktop {
+  display: none !important;
+
+  @media (min-width: $breakpoint-md) {
+    display: block !important;
+  }
+}
+
+// Stack utilities - convert flex row to column on mobile
+.stack-mobile {
+  @media (max-width: $breakpoint-mobile-max) {
+    flex-direction: column !important;
+  }
+}
+
+.stack-tablet {
+  @media (max-width: $breakpoint-tablet-max) {
+    flex-direction: column !important;
+  }
+}
+
+// Full width on mobile
+.full-width-mobile {
+  @media (max-width: $breakpoint-mobile-max) {
+    width: 100% !important;
+  }
+}
+
+// Text utilities
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-wrap {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.text-center-mobile {
+  @media (max-width: $breakpoint-mobile-max) {
+    text-align: center !important;
+  }
+}
+
+// Touch target optimization (minimum 44x44px for mobile)
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+}

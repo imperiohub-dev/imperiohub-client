@@ -1,5 +1,5 @@
 /**
- * OrdersView - Manage orders
+ * OrdersView - Manage orders with responsive table
  */
 
 export const OrdersView = () => {
@@ -9,16 +9,29 @@ export const OrdersView = () => {
     { id: 3, client: 'Carlos López', total: 2150.75, status: 'processing' },
   ];
 
-  const getStatusBadge = (status: string) => {
+  const getStatusClass = (status: string) => {
     switch (status) {
       case 'completed':
-        return <span className="badge badge-success">Completado</span>;
+        return 'status-success';
       case 'pending':
-        return <span className="badge badge-warning">Pendiente</span>;
+        return 'status-warning';
       case 'processing':
-        return <span className="badge badge-info">Procesando</span>;
+        return 'status-info';
       default:
-        return <span className="badge">{status}</span>;
+        return '';
+    }
+  };
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'completed':
+        return 'Completado';
+      case 'pending':
+        return 'Pendiente';
+      case 'processing':
+        return 'Procesando';
+      default:
+        return status;
     }
   };
 
@@ -30,31 +43,39 @@ export const OrdersView = () => {
       </div>
 
       <div className="card">
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-              <th style={{ padding: '1rem', textAlign: 'left' }}>ID</th>
-              <th style={{ padding: '1rem', textAlign: 'left' }}>Cliente</th>
-              <th style={{ padding: '1rem', textAlign: 'left' }}>Total</th>
-              <th style={{ padding: '1rem', textAlign: 'left' }}>Estado</th>
-              <th style={{ padding: '1rem', textAlign: 'right' }}>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {mockOrders.map((order) => (
-              <tr key={order.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                <td style={{ padding: '1rem' }}>#{order.id}</td>
-                <td style={{ padding: '1rem' }}>{order.client}</td>
-                <td style={{ padding: '1rem' }}>${order.total.toFixed(2)}</td>
-                <td style={{ padding: '1rem' }}>{getStatusBadge(order.status)}</td>
-                <td style={{ padding: '1rem', textAlign: 'right' }}>
-                  <button className="btn btn-sm btn-ghost">Ver</button>
-                  <button className="btn btn-sm btn-ghost ml-sm">Editar</button>
-                </td>
+        <div className="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Total</th>
+                <th>Estado</th>
+                <th>Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {mockOrders.map((order) => (
+                <tr key={order.id}>
+                  <td data-label="ID">#{order.id}</td>
+                  <td data-label="Cliente">{order.client}</td>
+                  <td data-label="Total">${order.total.toFixed(2)}</td>
+                  <td data-label="Estado">
+                    <span className={`table-status ${getStatusClass(order.status)}`}>
+                      {getStatusLabel(order.status)}
+                    </span>
+                  </td>
+                  <td data-label="Acciones">
+                    <div className="table-actions">
+                      <button className="btn btn-sm btn-ghost">Ver</button>
+                      <button className="btn btn-sm btn-ghost">Editar</button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

@@ -1,0 +1,221 @@
+// ============================================
+// Responsive Table Styles
+// ============================================
+// On desktop: traditional table layout
+// On mobile: converts to card layout for better readability
+
+@use '../abstracts' as *;
+
+// Base table styles
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  // Desktop: Traditional table
+  @media (min-width: $breakpoint-sm) {
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: $color-background-secondary;
+      border-radius: $border-radius-md;
+      overflow: hidden;
+    }
+
+    thead {
+      background: $color-background-contrast;
+      border-bottom: $border-width-medium solid $color-border-primary;
+    }
+
+    th {
+      padding: $spacing-md $spacing-lg;
+      text-align: left;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-semibold;
+      color: $color-text-secondary;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      padding: $spacing-md $spacing-lg;
+      font-size: $font-size-sm;
+      color: $color-text-primary;
+      border-bottom: $border-width-thin solid $color-border-secondary;
+    }
+
+    tbody tr {
+      transition: background $transition-fast;
+
+      &:hover {
+        background: alpha($color-text-primary, 0.03);
+      }
+
+      &:last-child td {
+        border-bottom: none;
+      }
+    }
+  }
+
+  // Mobile: Card layout
+  @media (max-width: $breakpoint-mobile-max) {
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+      display: block;
+    }
+
+    // Hide table headers on mobile
+    thead tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+    }
+
+    tr {
+      background: $color-background-secondary;
+      border: $border-width-thin solid $color-border-primary;
+      border-radius: $border-radius-md;
+      margin-bottom: $spacing-md;
+      padding: $spacing-md;
+      box-shadow: $shadow-sm;
+    }
+
+    td {
+      border: none;
+      position: relative;
+      padding: $spacing-sm $spacing-md;
+      padding-left: 50%;
+      text-align: right;
+      font-size: $font-size-sm;
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      // Add label before content using data-label attribute
+      &::before {
+        content: attr(data-label);
+        position: absolute;
+        left: $spacing-md;
+        width: calc(50% - #{$spacing-md * 2});
+        text-align: left;
+        font-weight: $font-weight-semibold;
+        color: $color-text-secondary;
+        font-size: $font-size-xs;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      // First cell as header
+      &:first-child {
+        background: $color-background-contrast;
+        margin: calc(-1 * #{$spacing-md}) calc(-1 * #{$spacing-md}) $spacing-sm;
+        padding: $spacing-md;
+        font-weight: $font-weight-bold;
+        font-size: $font-size-md;
+        border-radius: $border-radius-md $border-radius-md 0 0;
+        justify-content: center;
+        color: $color-accent;
+
+        &::before {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+// Action buttons in tables
+.table-actions {
+  display: flex;
+  gap: $spacing-xs;
+  align-items: center;
+
+  @media (max-width: $breakpoint-mobile-max) {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .btn {
+    padding: $spacing-xs $spacing-sm;
+    font-size: $font-size-xs;
+    min-width: 60px;
+
+    @media (max-width: $breakpoint-mobile-max) {
+      flex: 1;
+      min-width: auto;
+    }
+  }
+}
+
+// Status badges in tables
+.table-status {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-xs;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+
+  &.status-active,
+  &.status-success {
+    background: alpha($color-status-success, 0.15);
+    color: $color-status-success;
+    border: $border-width-thin solid alpha($color-status-success, 0.3);
+  }
+
+  &.status-inactive,
+  &.status-pending {
+    background: alpha($color-text-secondary, 0.15);
+    color: $color-text-secondary;
+    border: $border-width-thin solid alpha($color-text-secondary, 0.3);
+  }
+
+  &.status-error,
+  &.status-failed {
+    background: alpha($color-status-error, 0.15);
+    color: $color-status-error;
+    border: $border-width-thin solid alpha($color-status-error, 0.3);
+  }
+
+  &.status-warning {
+    background: alpha($color-status-warning, 0.15);
+    color: $color-status-warning;
+    border: $border-width-thin solid alpha($color-status-warning, 0.3);
+  }
+
+  &.status-info {
+    background: alpha($color-status-info, 0.15);
+    color: $color-status-info;
+    border: $border-width-thin solid alpha($color-status-info, 0.3);
+  }
+}
+
+// Empty state for tables
+.table-empty {
+  @include flex-center;
+  @include flex-column($spacing-md);
+  padding: $spacing-xxxl $spacing-md;
+  text-align: center;
+  color: $color-text-secondary;
+
+  .empty-icon {
+    font-size: 48px;
+    opacity: 0.5;
+  }
+
+  .empty-text {
+    font-size: $font-size-md;
+    font-weight: $font-weight-medium;
+  }
+
+  .empty-description {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+  }
+}

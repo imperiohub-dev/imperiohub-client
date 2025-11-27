@@ -96,3 +96,8 @@ $breakpoint-sm: 768px;
 $breakpoint-md: 1024px;
 $breakpoint-lg: 1280px;
 $breakpoint-xl: 1536px;
+
+// Mobile-first breakpoint boundaries
+// Use these for max-width media queries
+$breakpoint-mobile-max: $breakpoint-sm - 1px; // 767px - everything below tablet
+$breakpoint-tablet-max: $breakpoint-md - 1px; // 1023px - everything below desktop

@@ -10,7 +10,7 @@
   @include custom-scrollbar;
 
   // Mobile: Off-canvas drawer
-  @media (max-width: 767px) {
+  @media (max-width: $breakpoint-mobile-max) {
     position: fixed;
     top: 0;
     left: -280px; // Hidden off-screen by default
@@ -35,7 +35,7 @@
 .left-sidebar__overlay {
   display: none;
 
-  @media (max-width: 767px) {
+  @media (max-width: $breakpoint-mobile-max) {
     display: block;
     position: fixed;
     top: 0;
@@ -59,7 +59,7 @@
 .left-sidebar__close {
   display: none;
 
-  @media (max-width: 767px) {
+  @media (max-width: $breakpoint-mobile-max) {
     display: flex;
     align-items: center;
     justify-content: center;

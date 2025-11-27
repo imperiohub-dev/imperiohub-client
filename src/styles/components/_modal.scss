@@ -1,0 +1,334 @@
+// ============================================
+// Responsive Modal Styles
+// ============================================
+// Desktop: Centered modal with max-width
+// Mobile: Full-screen modal for better UX
+
+@use '../abstracts' as *;
+
+// Modal overlay/backdrop
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: $z-index-modal-backdrop;
+  padding: $spacing-lg;
+  backdrop-filter: blur(4px);
+  animation: fadeIn $transition-fast;
+
+  @media (max-width: $breakpoint-mobile-max) {
+    padding: 0; // Full screen on mobile
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+// Modal container
+.modal {
+  position: relative;
+  background: $color-background-primary;
+  border: $border-width-thin solid $color-border-primary;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-xl;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp $transition-normal;
+  z-index: $z-index-modal;
+
+  @media (max-width: $breakpoint-mobile-max) {
+    max-width: 100%;
+    width: 100%;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+    border: none;
+    animation: slideUpMobile $transition-normal;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideUpMobile {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  // Size variants
+  &.modal-sm {
+    max-width: 400px;
+
+    @media (max-width: $breakpoint-mobile-max) {
+      max-width: 100%;
+    }
+  }
+
+  &.modal-lg {
+    max-width: 800px;
+
+    @media (max-width: $breakpoint-mobile-max) {
+      max-width: 100%;
+    }
+  }
+
+  &.modal-xl {
+    max-width: 1200px;
+
+    @media (max-width: $breakpoint-mobile-max) {
+      max-width: 100%;
+    }
+  }
+}
+
+// Modal header
+.modal-header {
+  padding: $spacing-lg;
+  border-bottom: $border-width-thin solid $color-border-primary;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  background: $color-background-secondary;
+
+  @media (max-width: $breakpoint-mobile-max) {
+    padding: $spacing-md;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+
+  h2,
+  h3 {
+    margin: 0;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    color: $color-accent;
+
+    @media (max-width: $breakpoint-mobile-max) {
+      font-size: $font-size-md;
+    }
+  }
+
+  .modal-subtitle {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    margin-top: $spacing-xs;
+  }
+}
+
+// Close button
+.modal-close {
+  @include flex-center;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: none;
+  border-radius: $border-radius-sm;
+  cursor: pointer;
+  color: $color-text-secondary;
+  font-size: $font-size-xl;
+  flex-shrink: 0;
+  transition: all $transition-fast;
+  margin-left: $spacing-md;
+
+  &:hover {
+    background: alpha($color-text-primary, 0.1);
+    color: $color-text-primary;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  @media (max-width: $breakpoint-mobile-max) {
+    width: 44px; // Larger touch target
+    height: 44px;
+  }
+}
+
+// Modal body
+.modal-body {
+  padding: $spacing-lg;
+  overflow-y: auto;
+  flex: 1;
+  @include custom-scrollbar;
+
+  @media (max-width: $breakpoint-mobile-max) {
+    padding: $spacing-md;
+  }
+
+  // If body has form
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+}
+
+// Modal footer
+.modal-footer {
+  padding: $spacing-lg;
+  border-top: $border-width-thin solid $color-border-primary;
+  display: flex;
+  gap: $spacing-md;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  background: $color-background-secondary;
+
+  @media (max-width: $breakpoint-mobile-max) {
+    padding: $spacing-md;
+    flex-direction: column-reverse;
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+// Confirmation modal variant
+.modal-confirm {
+  max-width: 450px;
+
+  .modal-body {
+    text-align: center;
+    padding: $spacing-xl;
+
+    .confirm-icon {
+      font-size: 64px;
+      margin-bottom: $spacing-md;
+
+      &.icon-warning {
+        color: $color-status-warning;
+      }
+
+      &.icon-error {
+        color: $color-status-error;
+      }
+
+      &.icon-success {
+        color: $color-status-success;
+      }
+
+      &.icon-info {
+        color: $color-status-info;
+      }
+    }
+
+    h3 {
+      margin: 0 0 $spacing-sm 0;
+      font-size: $font-size-lg;
+      color: $color-text-primary;
+    }
+
+    p {
+      margin: 0;
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+      line-height: $line-height-relaxed;
+    }
+  }
+
+  .modal-footer {
+    justify-content: center;
+    gap: $spacing-sm;
+
+    @media (max-width: $breakpoint-mobile-max) {
+      flex-direction: row;
+
+      .btn {
+        flex: 1;
+      }
+    }
+  }
+}
+
+// Bottom sheet variant (mobile drawer)
+.modal-bottom-sheet {
+  @media (max-width: $breakpoint-mobile-max) {
+    height: auto;
+    max-height: 90vh;
+    border-radius: $border-radius-lg $border-radius-lg 0 0;
+    animation: slideUpSheet $transition-normal;
+    margin-top: auto;
+
+    @keyframes slideUpSheet {
+      from {
+        transform: translateY(100%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    // Drag handle
+    &::before {
+      content: '';
+      position: absolute;
+      top: $spacing-sm;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 4px;
+      background: $color-border-primary;
+      border-radius: 2px;
+    }
+
+    .modal-header {
+      padding-top: $spacing-lg;
+    }
+  }
+}
+
+// Loading state
+.modal-loading {
+  .modal-body {
+    @include flex-center;
+    min-height: 200px;
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid $color-border-primary;
+      border-top-color: $color-accent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  }
+}

@@ -9,7 +9,7 @@
   height: 60px;
 
   // Reduce height on mobile to maximize content space
-  @media (max-width: 767px) {
+  @media (max-width: $breakpoint-mobile-max) {
     height: 56px;
   }
 }
@@ -25,7 +25,7 @@
 .top-menu-bar__hamburger {
   display: none; // Hidden on desktop
 
-  @media (max-width: 767px) {
+  @media (max-width: $breakpoint-mobile-max) {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -63,7 +63,7 @@
     margin: 0;
 
     // Reduce size on mobile
-    @media (max-width: 767px) {
+    @media (max-width: $breakpoint-mobile-max) {
       font-size: $font-size-md;
     }
   }
@@ -75,7 +75,7 @@
   gap: $spacing-xs;
 
   // Hide theme navigation on mobile (replaced by BottomNavBar)
-  @media (max-width: 767px) {
+  @media (max-width: $breakpoint-mobile-max) {
     display: none;
   }
 }
